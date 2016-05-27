@@ -94,7 +94,7 @@ class Evaluator(models.Model):
     class Meta:
         ordering = ('name',)
 
-class Releases(models.Model):
+class Release(models.Model):
     acquisition=models.ForeignKey(Acquisition)
 
     def __str__(self):
