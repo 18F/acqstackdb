@@ -1,6 +1,44 @@
 from django.db import models
 
 # Create your models here.
+class Agency(models.Model):
+    name=models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+class Subagency(models.Model):
+    name=models.CharField(max_length=100)
+    agency=models.ForeignKey(Agency)
+
+    def __str__(self):
+        return "%s - %s" % self.name, self.agency
+
+    class Meta:
+        ordering = ('name',)
+
+class ContractingOffice(models.Model):
+    name=models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+class ContractingOfficer(models.Model):
+    name=models.CharField(max_length=100)
+    contracting_office=models.ForeignKey(ContractingOffice)
+
+    def __str__(self):
+        return "%s - %s" % self.name, self.contracting_office
+
+    class Meta:
+        ordering = ('name',)
+
+class COR(models.Model):
+    name=models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
 class Acquisition(models.Model):
     SET_ASIDE_CHOICES=(
     # TODO: add set-asides here
@@ -28,13 +66,15 @@ class Acquisition(models.Model):
     rfq_id=models.IntegerField()
     period_of_performance=models.DateField()
     dollars=models.IntegerField()
-    set_aside_status=models.CharField(options=SET_ASIDE_CHOICES)
+    set_aside_status=models.CharField(max_length=100, choices=SET_ASIDE_CHOICES)
     amount_of_competition=models.IntegerField()
-    contract_type=models.CharField(options=CONTRACT_TYPE_CHOICES)
+    contract_type=models.CharField(max_length=100, choices=CONTRACT_TYPE_CHOICES)
     description=models.TextField(max_length=500)
-    naics=models.IntegerField(max_length=6)
-    competition_strategy=models.CharField(options=COMPETITION_STRATEGY_CHOICES)
-    procurement_method=models.CharField(options=PROCUREMENT_METHOD_CHOICES)
+    naics=models.IntegerField()
+    competition_strategy=models.CharField(max_length=100,
+                                        choices=COMPETITION_STRATEGY_CHOICES)
+    procurement_method=models.CharField(max_length=100,
+                                        choices=PROCUREMENT_METHOD_CHOICES)
     award_date=models.DateField()
     delivery_date=models.DateField()
 
@@ -44,46 +84,8 @@ class Acquisition(models.Model):
     class Meta:
         ordering = ('rfq_id',)
 
-class Agency(models.Model):
-    name=models.CharField()
-
-    def __str__(self):
-        return self.name
-
-class Subagency(models.Model):
-    name=models.CharField()
-    agency=models.ForeignKey(Agency)
-
-    def __str__(self):
-        return "%s - %s" % self.name, self.agency
-
-    class Meta:
-        ordering = ('name',)
-
-class ContractingOffice(models.Model):
-    name=models.CharField()
-
-    def __str__(self):
-        return self.name
-
-class ContractingOfficer(models.Model):
-    name=models.CharField()
-    contracting_office=models.ForeignKey(ContractingOffice)
-
-    def __str__(self):
-        return "%s - %s" % self.name, self.contracting_office
-
-    class Meta:
-        ordering = ('name',)
-
-class COR(models.Model):
-    name=models.CharField()
-
-    def __str__(self):
-        return self.name
-
 class Evaluator(models.Model):
-    name=models.CharField()
+    name=models.CharField(max_length=100)
     acquisition=models.ManyToManyField(Acquisition)
 
     def __str__(self):
@@ -99,4 +101,4 @@ class Releases(models.Model):
         return self.id
 
     class Meta:
-        ordering = ('id')
+        ordering = ('id',)
