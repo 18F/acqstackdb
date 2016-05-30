@@ -12,7 +12,7 @@ class Subagency(models.Model):
     agency=models.ForeignKey(Agency)
 
     def __str__(self):
-        return "%s - %s" % self.name, self.agency
+        return "%s - %s" % (self.name, self.agency)
 
     class Meta:
         ordering = ('name',)
@@ -28,7 +28,7 @@ class ContractingOfficer(models.Model):
     contracting_office=models.ForeignKey(ContractingOffice)
 
     def __str__(self):
-        return "%s - %s" % self.name, self.contracting_office
+        return "%s - %s" % (self.name, self.contracting_office)
 
     class Meta:
         ordering = ('name',)
@@ -79,7 +79,7 @@ class Acquisition(models.Model):
     delivery_date=models.DateField()
 
     def __str__(self):
-        return "%s (%s - %s)" % self.task, self.agency, self.subagency
+        return "%s (%s - %s)" % (self.task, self.agency, self.subagency)
 
     class Meta:
         ordering = ('rfq_id',)
