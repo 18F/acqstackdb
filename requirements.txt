@@ -1,8 +1,9 @@
 Django==1.9.6
+django-floppyforms==1.6.2
 Jinja2==2.8
 MarkupSafe==0.23
 poirot==0.2.0
 regex==2016.5.23
 requests==2.10.0
-South==1.0.2
 tqdm==4.7.1
+whitenoise==3.2
