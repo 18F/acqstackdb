@@ -20,5 +20,6 @@ from acquisitions import views
 
 urlpatterns = [
     url(r'^$', views.home, name='home'),
+    url(r'^new/$', views.new, name="new"),
     url(r'^admin/', include(admin.site.urls)),
 ]

@@ -12,7 +12,7 @@ class Subagency(models.Model):
     agency=models.ForeignKey(Agency)
 
     def __str__(self):
-        return "%s - %s" % self.name, self.agency
+        return "%s - %s" % (self.name, self.agency)
 
     class Meta:
         ordering = ('name',)
@@ -28,7 +28,7 @@ class ContractingOfficer(models.Model):
     contracting_office=models.ForeignKey(ContractingOffice)
 
     def __str__(self):
-        return "%s - %s" % self.name, self.contracting_office
+        return "%s - %s" % (self.name, self.contracting_office)
 
     class Meta:
         ordering = ('name',)
@@ -56,33 +56,53 @@ class Acquisition(models.Model):
     # TODO: add procurement methods here
     )
 
+    AWARD_STATUS_CHOICES=(
+        (1,"18F - Qual"),
+        (2,"OGC - Qual"),
+        (3,"OGP - Qual"),
+        (4,"18F - Agreement Scoping"),
+        (5,"18F - Agreement Approval"),
+        (6,"OGC - Agreement Approval"),
+        (7,"18F - RFQ Scoping"),
+        (8,"OGC - RFQ Scoping"),
+        (9,"OGP - RFQ Scoping"),
+        (10," 18F - RFQ Ready"),
+        (11," 18F - RFQ on Street"),
+        (12," 18F - Eval"),
+        (13," OGC - Eval"),
+        (14," OGP - Eval"),
+        (15," 18F - Award"),
+        (16," OGC - Award"),
+        (17," OGP - Award"),
+        (18," 18F - Post-award"),
+    )
+
     agency=models.ForeignKey(Agency, blank=False)
     subagency=models.ForeignKey(Subagency)
-    contracting_officer=models.ForeignKey(ContractingOfficer)
-    contracting_officer_representative=models.ForeignKey(COR)
-    contracting_office=models.ForeignKey(ContractingOffice)
-    product_owner=models.CharField(max_length=50)
+    contracting_officer=models.ForeignKey(ContractingOfficer, null=True, blank=True)
+    contracting_officer_representative=models.ForeignKey(COR, null=True, blank=True)
+    contracting_office=models.ForeignKey(ContractingOffice, null=True, blank=True)
+    award_status=models.IntegerField(default=0,blank=False,
+                                choices=AWARD_STATUS_CHOICES)
+    product_owner=models.CharField(max_length=50, null=True, blank=True)
     task=models.CharField(max_length=100, blank=False)
-    rfq_id=models.IntegerField()
-    period_of_performance=models.DateField()
-    dollars=models.IntegerField()
-    set_aside_status=models.CharField(max_length=100, choices=SET_ASIDE_CHOICES)
-    amount_of_competition=models.IntegerField()
-    contract_type=models.CharField(max_length=100, choices=CONTRACT_TYPE_CHOICES)
-    description=models.TextField(max_length=500)
-    naics=models.IntegerField()
+    rfq_id=models.IntegerField(null=True, blank=True)
+    period_of_performance=models.DateField(null=True, blank=True)
+    dollars=models.IntegerField(null=True, blank=True)
+    set_aside_status=models.CharField(max_length=100, choices=SET_ASIDE_CHOICES, null=True, blank=True)
+    amount_of_competition=models.IntegerField(null=True, blank=True)
+    contract_type=models.CharField(max_length=100, choices=CONTRACT_TYPE_CHOICES, null=True, blank=True)
+    description=models.TextField(max_length=500, null=True, blank=True)
+    naics=models.IntegerField(null=True, blank=True)
     competition_strategy=models.CharField(max_length=100,
-                                        choices=COMPETITION_STRATEGY_CHOICES)
+                                        choices=COMPETITION_STRATEGY_CHOICES, null=True, blank=True)
     procurement_method=models.CharField(max_length=100,
-                                        choices=PROCUREMENT_METHOD_CHOICES)
-    award_date=models.DateField()
-    delivery_date=models.DateField()
+                                        choices=PROCUREMENT_METHOD_CHOICES, null=True, blank=True)
+    award_date=models.DateField(null=True, blank=True)
+    delivery_date=models.DateField(null=True, blank=True)
 
     def __str__(self):
-        return "%s (%s - %s)" % self.task, self.agency, self.subagency
-
-    class Meta:
-        ordering = ('rfq_id',)
+        return "%s (%s - %s)" % (self.task, self.agency, self.subagency)
 
 class Evaluator(models.Model):
     name=models.CharField(max_length=100)
