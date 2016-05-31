@@ -1,0 +1,11 @@
+{% extends "acquisitions/layout.html" %}
+
+{% block content %}
+<h1>Ongoing Acquisitions</h1>
+{% for acq in acquisitions %}
+  <h2>{{ acq.task }}</h2>
+  <p>
+    {{ acq.description }}
+  </p>
+{% endfor %}
+{% endblock %}
