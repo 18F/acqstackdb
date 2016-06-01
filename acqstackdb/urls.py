@@ -21,5 +21,7 @@ from acquisitions import views
 urlpatterns = [
     url(r'^$', views.home, name='home'),
     url(r'^new/$', views.new, name="new"),
+    url(r'^logout/$', views.logout_view, name="logout"),
     url(r'^admin/', include(admin.site.urls)),
+    url('', include('social.apps.django_app.urls', namespace='social')),
 ]

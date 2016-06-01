@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'acquisitions',
 
     'floppyforms',
+    'social.apps.django_app.default',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -69,6 +70,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social.apps.django_app.context_processors.backends',
+                'social.apps.django_app.context_processors.login_redirect',
             ],
         },
     },
@@ -109,3 +112,16 @@ STATICFILES_DIRS = [
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
+# Django Auth
+# https://github.com/pennersr/django-allauth
+
+SOCIAL_AUTH_GITHUB_TEAM_KEY = os.environ.get("SOCIAL_AUTH_GITHUB_TEAM_KEY")
+SOCIAL_AUTH_GITHUB_TEAM_SCOPE = os.environ.get("SOCIAL_AUTH_GITHUB_TEAM_SCOPE")
+SOCIAL_AUTH_GITHUB_TEAM_ID = os.environ.get("SOCIAL_AUTH_GITHUB_TEAM_ID")
+SOCIAL_AUTH_GITHUB_TEAM_SCOPE = os.environ.get("SOCIAL_AUTH_GITHUB_TEAM_SCOPE")
+
+AUTHENTICATION_BACKENDS = (
+    'social.backends.github.GithubTeamOAuth2',
+)

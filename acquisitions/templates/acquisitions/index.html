@@ -2,7 +2,9 @@
 
 {% block content %}
 <h1>Ongoing Acquisitions</h1>
+{% if request.user.is_authenticated %}
 <a class="usa-button" href="/new">add new</a>
+<a href="/logout">Log out</a>
 {% for acq in acquisitions %}
   <h2>{{ acq.task }}</h2>
   <p>Status: {{ acq.get_award_status_display }}</p>
@@ -10,4 +12,7 @@
     {{ acq.description }}
   </p>
 {% endfor %}
+{% else %}
+<a href="{% url 'social:begin' 'github-team' %}?next={{ request.path }}">Log in</a>
+{% endif %}
 {% endblock %}
