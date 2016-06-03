@@ -118,9 +118,9 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # https://github.com/pennersr/django-allauth
 
 SOCIAL_AUTH_GITHUB_TEAM_KEY = os.environ.get("SOCIAL_AUTH_GITHUB_TEAM_KEY")
-SOCIAL_AUTH_GITHUB_TEAM_SCOPE = os.environ.get("SOCIAL_AUTH_GITHUB_TEAM_SCOPE")
+SOCIAL_AUTH_GITHUB_TEAM_SECRET = os.environ.get("SOCIAL_AUTH_GITHUB_TEAM_SECRET")
 SOCIAL_AUTH_GITHUB_TEAM_ID = os.environ.get("SOCIAL_AUTH_GITHUB_TEAM_ID")
-SOCIAL_AUTH_GITHUB_TEAM_SCOPE = ['user']
+SOCIAL_AUTH_GITHUB_TEAM_SCOPE = ['user','read:org']
 
 SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
 
