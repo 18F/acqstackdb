@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import RegexValidator
 
 # Create your models here.
 class Agency(models.Model):
@@ -35,6 +36,16 @@ class ContractingOfficer(models.Model):
 
 class COR(models.Model):
     name=models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+class Vendor(models.Model):
+    name=models.CharField(max_length=200, blank=False)
+    email=models.EmailField(blank=False)
+    duns=models.CharField(max_length=9, blank=False, validators=[
+        RegexValidator(regex='^\d{9}$',message="DUNS number must be 9 digits")
+    ])
 
     def __str__(self):
         return self.name
@@ -82,6 +93,7 @@ class Acquisition(models.Model):
     contracting_officer=models.ForeignKey(ContractingOfficer, null=True, blank=True)
     contracting_officer_representative=models.ForeignKey(COR, null=True, blank=True)
     contracting_office=models.ForeignKey(ContractingOffice, null=True, blank=True)
+    vendor=models.ForeignKey(Vendor, null=True, blank=True)
     award_status=models.IntegerField(default=0,blank=False,
                                 choices=AWARD_STATUS_CHOICES)
     product_owner=models.CharField(max_length=50, null=True, blank=True)

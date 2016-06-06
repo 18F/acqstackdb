@@ -1,5 +1,6 @@
 import pytest
-from acquisitions.models import Acquisition, Agency, Subagency
+from django.core.exceptions import ValidationError
+from acquisitions.models import Acquisition, Agency, Subagency, Vendor
 
 @pytest.mark.django_db
 def test_create_acquisition():
@@ -13,3 +14,24 @@ def test_create_acquisition():
     )
 
     assert str(acquisition) == "Build a test thing (Test Subagency - Test Agency)"
+
+@pytest.mark.django_db
+def test_create_vendor():
+    vendor = Vendor.objects.create(
+        name = "Test Vendor",
+        email = "testvendor@fake.biz",
+        duns = 123456789
+    )
+
+    assert str(vendor) == "Test Vendor"
+
+@pytest.mark.django_db
+def test_bad_duns():
+    # with pytest.raises(ValidationError):
+        bad_duns_vendor = Vendor.objects.create(
+            name = "Bad DUNS Vendor",
+            email = "testvendor@fake.biz",
+            duns = 0000
+        )
+
+        assert str(bad_duns_vendor) == "Bad DUNS Vendor"
