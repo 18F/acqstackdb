@@ -1,12 +1,16 @@
 # acqstackdb
 
+`release`: [![Build Status](https://travis-ci.org/18F/acqstackdb.svg?branch=release)](https://travis-ci.org/18F/acqstackdb)
+
+`develop`: [![Build Status](https://travis-ci.org/18F/acqstackdb.svg?branch=develop)](https://travis-ci.org/18F/acqstackdb)
+
 ## Contributing
 
 See [CONTRIBUTING](CONTRIBUTING.md) for additional information.
 
 ### Branch flow
 
-- Main branch: `master`
+- Main branch: `release`
 - Development branch: `develop`
 
 ## Public domain
