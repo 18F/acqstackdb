@@ -7,4 +7,4 @@ install: pip install -r requirements.txt
 cache:
   directories:
   - "$HOME/.cache/pip"
-script: ./manage.py collectstatic && py.test
+script: ./manage.py collectstatic --noinput && py.test
