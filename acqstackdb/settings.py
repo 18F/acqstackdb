@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'acquisitions',
+    # 'acqstackdb',
 
     'floppyforms',
     'social.apps.django_app.default',
@@ -84,7 +85,7 @@ WSGI_APPLICATION = 'acqstackdb.wsgi.application'
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
-DATABASES = {'default': dj_database_url.config(default=DATABASE_URL)}
+DATABASES = {'default': dj_database_url.config(default="postgres://localhost/acqstackdb")}
 
 
 # Internationalization

@@ -102,7 +102,7 @@ class Acquisition(models.Model):
     delivery_date=models.DateField(null=True, blank=True)
 
     def __str__(self):
-        return "%s (%s - %s)" % (self.task, self.agency, self.subagency)
+        return "%s (%s)" % (self.task, self.subagency)
 
 class Evaluator(models.Model):
     name=models.CharField(max_length=100)
