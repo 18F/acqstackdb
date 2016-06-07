@@ -24,7 +24,7 @@ before_deploy:
 - unzip $HOME/18f.zip -d $HOME/18f-cli
 deploy:
 - provider: script
-  script: bash $HOME/18f-cli/18f-cli-develop/bin/release -o 18f-acq -s staging acquisitions
+  script: bash $HOME/18f-cli/18f-cli-release/bin/deploy -o 18f-acq -s staging acquisitions
   skip_cleanup: true
   on:
     branch: develop
