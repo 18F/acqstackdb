@@ -100,7 +100,7 @@ class Acquisition(models.Model):
     task=models.CharField(max_length=100, blank=False)
     rfq_id=models.IntegerField(null=True, blank=True)
     period_of_performance=models.DateField(null=True, blank=True)
-    dollars=models.IntegerField(null=True, blank=True)
+    dollars=models.DecimalField(decimal_places=2, max_digits=14, null=True, blank=True)
     set_aside_status=models.CharField(max_length=100, choices=SET_ASIDE_CHOICES, null=True, blank=True)
     amount_of_competition=models.IntegerField(null=True, blank=True)
     contract_type=models.CharField(max_length=100, choices=CONTRACT_TYPE_CHOICES, null=True, blank=True)
