@@ -1,10 +1,30 @@
 language: python
 python:
 - '3.5'
+env:
+  global:
+  - CF_USERNAME=18f-acq_deployer
+  - secure: mHiLq/H/z4qZ7TwYduV+KsO9rccOtxZ+Oi+AFO+hHU4uFMj8cTa7IxB+85DFd+KoQxNVwOLnweLVPWOUzt41I9TVxols5C6N0cx0Gg1aX+177aBBffpb/pGA6CnCcWn41H5VFJPJgCUeANEEmJ9sNu+V45BaIVSEbMPlDaIjkOB4MMX8D00b4q5ik5mJny+gTDDfc/Hdv6bCzVPZIlVYbir93nyCAdjtylkpOWl8uMqMWtH0RrmeFMFh1PdQhBnjupKhFOkL+j4JZcwc6CkPz5wNHdaUI9Rd5jErM4xcSZlTvpDB27pLg6mXvRc6qAhPfg1gtRXFLqPhzk5G4J7dDHhrRGbtihzvDIyDsWc6dKLljDrfZIUonDDorcnL4BB2pDYINqIQVq1WMzijMh0WF0wqqeycZiMLjuxVZA9CgcknvJh1JDCRmKOSe8zpM7CZ1GQ5Q/fo4+TUaAPZFyrx1pNgGKiGjyKCEJtqOA47QLlTSLiULT/ofVGoI9QFYIHjTIlR0OtJS8zUJbwGccGwWJLkZUeZmAw+ohGRTbP3wZwDcLnLTiouS3TN6YTls0Vs82sX9CHyXr06L+bsE6W3LysY0Wa93CreZPFtf7bgpF14rR+LRU29IVbqaXdariaDc97s3oRYb/yPrXmbgiTE6X4/yVFZkLB6UexWuBt5ohc=
 addons:
-  postgresql: "9.4"
+  postgresql: '9.4'
 install: pip install -r requirements.txt
 cache:
   directories:
   - "$HOME/.cache/pip"
-script: ./manage.py collectstatic --noinput && py.test
+script: "./manage.py collectstatic --noinput -v 0 && py.test"
+before_deploy:
+- export PATH=$HOME:$PATH
+- travis_retry curl -L -o $HOME/cf.tgz "https://cli.run.pivotal.io/stable?release=linux64-binary&version=6.15.0"
+- tar xzvf $HOME/cf.tgz -C $HOME
+- mkdir -p ${HOME}/Godeps/_workspace
+- export GOPATH=${HOME}/Godeps/_workspace
+- go get github.com/concourse/autopilot
+- cf install-plugin -f $GOPATH/bin/autopilot
+- travis_retry curl -L -o $HOME/18f.zip "https://github.com/18F/18f-cli/archive/release.zip"
+- unzip $HOME/18f.zip -d $HOME/18f-cli
+deploy:
+- provider: script
+  script: bash $HOME/18f-cli/18f-cli-develop/bin/release -o 18f-acq -s staging acquisitions
+  skip_cleanup: true
+  on:
+    branch: develop
