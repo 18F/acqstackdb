@@ -2,7 +2,7 @@
 
 `release`: [![Build Status](https://travis-ci.org/18F/acqstackdb.svg?branch=release)](https://travis-ci.org/18F/acqstackdb)
 
-`develop`: [![Build Status](https://travis-ci.org/18F/acqstackdb.svg?branch=develop)](https://travis-ci.org/18F/acqstackdb)
+`develop`: [![Build Status](https://travis-ci.org/18F/acqstackdb.svg?branch=develop)](https://travis-ci.org/18F/acqstackdb) [![Accessibility](https://continua11y.18f.gov/18F/acqstackdb.svg?branch=develop)](https://continua11y.18f.gov/18F/acqstackdb)
 
 This is a Django app built to track the progress of acquisitions by 18F Acquisitions.
 
