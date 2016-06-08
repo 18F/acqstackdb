@@ -7,7 +7,7 @@
     <tbody>
       <tr>
         {% for status in statuses.items %}
-        <td class="status-{{ status.0 }}">
+        <td class="status-{{ status.0 }}" title="{{status.1.title}}">
           {{ status.1.count }}
         </td>
         {% endfor %}
