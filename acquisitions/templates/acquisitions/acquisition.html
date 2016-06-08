@@ -1,0 +1,43 @@
+{% extends "acquisitions/layout.html" %}
+
+{% block content %}
+<h1>{{acquisition.task}}</h1>
+
+<h2>Status</h2>
+
+<h3>{{ acquisition.get_award_status_display }}</h3>
+<table class="usa-table-borderless">
+  <tbody>
+    <tr>
+      {% for status in statuses %}
+      <td title="{{ status.1 }}">
+        {% if status.0 == acquisition.award_status %} X {% else %} - {% endif %}
+      </td>
+      {% endfor %}
+    </tr>
+  </tbody>
+</table>
+
+<h2>Details</h2>
+
+<table class="usa-table-borderless">
+  <tbody>
+    <tr>
+      <td scope="row">
+        Client
+      </td>
+      <td>
+        {{ acquisition.subagency }}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Details
+      </td>
+      <td>
+        {{ acquisition.details }}
+      </td>
+    </tr>
+  </tbody>
+</table>
+{% endblock %}

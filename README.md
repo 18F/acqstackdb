@@ -8,7 +8,7 @@ This is a Django app built to track the progress of acquisitions by 18F Acquisit
 
 ## Installation
 
-This app is designed to run on Python 3.5.1. `pyenv` is recommended for managing your Python version, along with `pyenv-virtualenvwrapper` for managing the dependencies installed with `pip`. With that, you can prepare your development enviroment with:
+This app is designed to run on Python 3.5.1. `pyenv` is recommended for managing your Python version, along with `pyenv-virtualenvwrapper` for managing the dependencies installed with `pip`. With that, you can prepare your development environment by running:
 
 ```
 git clone https://github.com/18f/acqstackdb.git

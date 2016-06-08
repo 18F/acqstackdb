@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
@@ -18,6 +18,15 @@ def home(request):
     return render(request, "acquisitions/index.html", {
         "acquisitions":acquisitions,
         "statuses":statuses
+        })
+
+# @login_required
+def acquisition(request, id):
+    acquisition = get_object_or_404(Acquisition.objects.filter(id=id))
+    # acquisition = get_object_or_404(Acquisition.objects.filter(id=id).select_related('office__id', 'osbu_advisor__id'))
+    return render(request, 'acquisitions/acquisition.html', {
+        'acquisition': acquisition,
+        'statuses':Acquisition.AWARD_STATUS_CHOICES
         })
 
 @login_required
