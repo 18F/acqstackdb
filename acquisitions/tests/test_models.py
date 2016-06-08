@@ -23,15 +23,17 @@ def test_create_vendor():
         duns = 123456789
     )
 
+    vendor.full_clean()
     assert str(vendor) == "Test Vendor"
 
 @pytest.mark.django_db
 def test_bad_duns():
-    # with pytest.raises(ValidationError):
+    with pytest.raises(ValidationError):
         bad_duns_vendor = Vendor.objects.create(
             name = "Bad DUNS Vendor",
             email = "testvendor@fake.biz",
-            duns = 0000
+            duns = 666
         )
 
+        bad_duns_vendor.full_clean()
         assert str(bad_duns_vendor) == "Bad DUNS Vendor"
