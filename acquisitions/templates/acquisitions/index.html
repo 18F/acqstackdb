@@ -3,6 +3,17 @@
 {% block content %}
 <h1>Ongoing Acquisitions</h1>
 {% if request.user.is_authenticated %}
+<table>
+    <tbody>
+      <tr>
+        {% for status in statuses.items %}
+        <td class="status-{{ status.0 }}">
+          {{ status.1.count }}
+        </td>
+        {% endfor %}
+      </tr>
+    </tbody>
+  </table>
 <a class="usa-button" href="/new">add new</a>
 <a href="/logout">Log out</a>
 {% for acq in acquisitions %}

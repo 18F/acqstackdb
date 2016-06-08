@@ -8,7 +8,17 @@ from .forms import AcquisitionForm
 # Create your views here.
 def home(request):
     acquisitions = Acquisition.objects.all().order_by('award_status')
-    return render(request, "acquisitions/index.html", {"acquisitions":acquisitions})
+    statuses = {}
+    for s in Acquisition.AWARD_STATUS_CHOICES:
+        statuses[s[0]] = {}
+        statuses[s[0]]["title"] = s[1]
+        statuses[s[0]]["count"] = 0
+    for a in acquisitions:
+        statuses[a.award_status]["count"] += 1
+    return render(request, "acquisitions/index.html", {
+        "acquisitions":acquisitions,
+        "statuses":statuses
+        })
 
 @login_required
 def new(request):
