@@ -15,6 +15,7 @@ git clone https://github.com/18f/acqstackdb.git
 cd acqstackdb
 createdb acqstackdb
 mkvirtualenv acqstackdb
+pip install -r requirements.txt
 ```
 
 Authentication is managed via GitHub OAuth, with access limited to a specified GitHub team. First, you'll need a [GitHub application](https://github.com/settings/applications/new). Next, you'll need a GitHub organization and [a team within it](https://help.github.com/articles/setting-up-teams/). Getting the team's ID is a bit tricky, unfortunately, and involves [querying the GitHub API](https://developer.github.com/v3/orgs/teams/#list-teams).
@@ -25,7 +26,7 @@ At this point, you'll have the GitHub application's `Client ID` and `Client Secr
 export SOCIAL_AUTH_GITHUB_TEAM_KEY=YOUR_CLIENT_ID
 export SOCIAL_AUTH_GITHUB_TEAM_SECRET=YOUR_CLIENT_SECRET
 export SOCIAL_AUTH_GITHUB_TEAM_ID=YOUR_TEAM_ID
-pip install -r requirements.txt
+export SOCIAL_AUTH_REDIRECT_IS_HTTPS=False # to allow HTTP redirect to http://localhost
 ./manage.py runserver
 ```
 
