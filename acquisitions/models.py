@@ -68,6 +68,8 @@ class Acquisition(models.Model):
     )
 
     AWARD_STATUS_CHOICES=(
+    # When updating these choices, create a manual migration in order to
+    # preserve the proper ordering
         (1,"18F - Qual"),
         (2,"OGC - Qual"),
         (3,"OGP - Qual"),
