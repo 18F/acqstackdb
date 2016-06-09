@@ -123,9 +123,11 @@ SOCIAL_AUTH_GITHUB_TEAM_SECRET = os.environ.get("SOCIAL_AUTH_GITHUB_TEAM_SECRET"
 SOCIAL_AUTH_GITHUB_TEAM_ID = os.environ.get("SOCIAL_AUTH_GITHUB_TEAM_ID")
 SOCIAL_AUTH_GITHUB_TEAM_SCOPE = ['read:org']
 
-SOCIAL_AUTH_REDIRECT_IS_HTTPS = os.environ.get("SOCIAL_AUTH_REDIRECT_IS_HTTPS", default=True)
+SOCIAL_AUTH_REDIRECT_IS_HTTPS = os.environ.get("SOCIAL_AUTH_REDIRECT_IS_HTTPS")
 if str.lower(SOCIAL_AUTH_REDIRECT_IS_HTTPS) == "false": # os.environ returns a string rather than a boolean
     SOCIAL_AUTH_REDIRECT_IS_HTTPS = False
+else:
+    SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
 
 AUTHENTICATION_BACKENDS = (
     'social.backends.github.GithubTeamOAuth2',
