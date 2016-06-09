@@ -1,0 +1,17 @@
+engines:
+  pep8:
+    enabled: true
+  eslint:
+    enabled: true
+  csslint:
+    enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - python
+ratings:
+   paths:
+   - "**.py"
+exclude_paths:
+- "third-party/**"
