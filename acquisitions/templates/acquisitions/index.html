@@ -17,7 +17,7 @@
 <a class="usa-button" href="/new">add new</a>
 <a href="/logout">Log out</a>
 {% for acq in acquisitions %}
-  <h2>{{ acq.task }}</h2>
+  <h2><a href="/acquisition/{{ acq.id }}">{{ acq.task }}</a></h2>
   <p>Status: {{ acq.get_award_status_display }}</p>
   <p>
     {{ acq.description }}
