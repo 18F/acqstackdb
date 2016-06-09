@@ -8,6 +8,9 @@ class Agency(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name_plural = "Agencies"
+
 class Subagency(models.Model):
     name=models.CharField(max_length=100)
     agency=models.ForeignKey(Agency)
@@ -17,12 +20,17 @@ class Subagency(models.Model):
 
     class Meta:
         ordering = ('name',)
+        verbose_name_plural = "Subagencies"
 
 class ContractingOffice(models.Model):
     name=models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = "Contracting Office"
+        verbose_name_plural = "Contracting Offices"
 
 class ContractingOfficer(models.Model):
     name=models.CharField(max_length=100)
@@ -33,12 +41,19 @@ class ContractingOfficer(models.Model):
 
     class Meta:
         ordering = ('name',)
+        verbose_name = "Contracting Officer"
+        verbose_name_plural = "Contracting Officers"
 
 class COR(models.Model):
     name=models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ('name',)
+        verbose_name = "Contracting Officer Representative"
+        verbose_name_plural = "Contracting Officer Representatives"
 
 class Vendor(models.Model):
     name=models.CharField(max_length=200, blank=False)
