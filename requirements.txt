@@ -1,3 +1,5 @@
+codeclimate-test-reporter==0.1.1
+coverage==4.1
 defusedxml==0.4.1
 dj-database-url==0.4.1
 Django==1.9.6
@@ -10,6 +12,7 @@ psycopg2==2.6.1
 py==1.4.31
 PyJWT==1.4.0
 pytest==2.9.2
+pytest-cov==2.2.1
 pytest-django==2.9.1
 python-social-auth==0.2.19
 python3-openid==3.0.10

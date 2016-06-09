@@ -2,7 +2,7 @@
 
 `release`: [![Build Status](https://travis-ci.org/18F/acqstackdb.svg?branch=release)](https://travis-ci.org/18F/acqstackdb)
 
-`develop`: [![Build Status](https://travis-ci.org/18F/acqstackdb.svg?branch=develop)](https://travis-ci.org/18F/acqstackdb) [![Accessibility](https://continua11y.18f.gov/18F/acqstackdb.svg?branch=develop)](https://continua11y.18f.gov/18F/acqstackdb)
+`develop`: [![Build Status](https://travis-ci.org/18F/acqstackdb.svg?branch=develop)](https://travis-ci.org/18F/acqstackdb) [![Accessibility](https://continua11y.18f.gov/18F/acqstackdb.svg?branch=develop)](https://continua11y.18f.gov/18F/acqstackdb) [![Code Climate](https://codeclimate.com/github/18F/acqstackdb/badges/gpa.svg)](https://codeclimate.com/github/18F/acqstackdb) [![Test Coverage](https://codeclimate.com/github/18F/acqstackdb/badges/coverage.svg)](https://codeclimate.com/github/18F/acqstackdb/coverage)
 
 This is a Django app built to track the progress of acquisitions by 18F Acquisitions.
 
@@ -14,6 +14,7 @@ This app is designed to run on Python 3.5.1. `pyenv` is recommended for managing
 git clone https://github.com/18f/acqstackdb.git
 cd acqstackdb
 createdb acqstackdb
+./manage.py migrate
 mkvirtualenv acqstackdb
 pip install -r requirements.txt
 ```
