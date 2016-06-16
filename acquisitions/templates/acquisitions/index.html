@@ -16,12 +16,39 @@
   </table>
 <a class="usa-button" href="/new">add new</a>
 <a href="/logout">Log out</a>
-{% for acq in acquisitions %}
-  <h2><a href="/acquisition/{{ acq.id }}">{{ acq.task }}</a></h2>
-  <p>Status: {{ acq.get_award_status_display }}</p>
-  <p>
-    {{ acq.description }}
-  </p>
+{% for status in statuses.items %}
+  <div class="status={{ status.0 }}">
+    <h2>{{ status.1.title }}</h2>
+    <hr />
+    {% if status.1.acquisitions|length > 0 %}
+    {% for acq in status.1.acquisitions %}
+    <div class="acq-content usa-grid">
+      <h3><a href="/acquisition/{{ acq.id }}">{{ acq.task }} ({{ acq.subagency }})</a></h3>
+      <div><span class="acq-field usa-width-one-third">Description</span><span class="acq-data usa-width-two-thirds">{{ acq.description | default:"—" }}</span></div>
+      <div><span class="acq-field usa-width-one-third">Value</span><span class="acq-data usa-width-two-thirds">{{ acq.dollars | default:"—"}}</span></div>
+      <div><span class="acq-field usa-width-one-third">Award Date</span><span class="acq-data usa-width-two-thirds">{{ acq.award_date | default:"—" }}</span></div>
+      {% if acq.award_status > 17 %}
+      <div><span class="acq-field usa-width-one-third">Vendor</span><span class="acq-data usa-width-two-thirds">{{ acq.vendor | default:"—" }}</span></div>
+      {% endif %}
+      <div><span class="acq-field usa-width-one-third">Delivery Date</span><span class="acq-data usa-width-two-thirds">{{ acq.delivery_date | default:"—" }}</span></div>
+      <div><span class="acq-field usa-width-one-third">Period of Performance</span><span class="acq-data usa-width-two-thirds">{{ acq.period_of_performance | default:"—" }}</span></div>
+      <div><span class="acq-field usa-width-one-third">Contracting Office</span><span class="acq-data usa-width-two-thirds">{{ acq.contracting_office | default:"—" }}</span></div>
+      <div><span class="acq-field usa-width-one-third">Contracting Officer</span><span class="acq-data usa-width-two-thirds">{{ acq.contracting_officer | default:"—"}}</span></div>
+      <div><span class="acq-field usa-width-one-third">COR</span><span class="acq-data usa-width-two-thirds">{{ acq.cor | default:"—" }}</span></div>
+      <div><span class="acq-field usa-width-one-third">Product Owner</span><span class="acq-data usa-width-two-thirds">{{ acq.product_owner | default:"—" }}</span></div>
+      <div><span class="acq-field usa-width-one-third">Set-Aside Status</span><span class="acq-data usa-width-two-thirds">{{ acq.set_aside_status | default:"—" }}</span></div>
+      <div><span class="acq-field usa-width-one-third">Competition Strategy</span><span class="acq-data usa-width-two-thirds">{{ acq.amount_of_competition | default:"—" }}</span></div>
+      <div><span class="acq-field usa-width-one-third">Contract Type</span><span class="acq-data usa-width-two-thirds">{{ acq.contract_type | default:"—" }}</span></div>
+      <div><span class="acq-field usa-width-one-third">NAICS Code</span><span class="acq-data usa-width-two-thirds">{{ acq.naics | default:"—" }}</span></div>
+      <div><span class="acq-field usa-width-one-third">Procurement Method</span><span class="acq-data usa-width-two-thirds">{{ acq.procurement_method | default:"—" }}</span></div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="acq-content usa-grid">
+      <h3>None</h3>
+    </div>
+    {% endif %}
+  </div>
 {% endfor %}
 {% else %}
 <a href="{% url 'social:begin' 'github-team' %}?next={{ request.path }}">Log in</a>

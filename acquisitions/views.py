@@ -13,17 +13,17 @@ def home(request):
         statuses[s[0]] = {}
         statuses[s[0]]["title"] = s[1]
         statuses[s[0]]["count"] = 0
+        statuses[s[0]]["acquisitions"] = []
     for a in acquisitions:
         statuses[a.award_status]["count"] += 1
+        statuses[a.award_status]["acquisitions"].append(a)
     return render(request, "acquisitions/index.html", {
-        "acquisitions":acquisitions,
         "statuses":statuses
         })
 
 # @login_required
 def acquisition(request, id):
     acquisition = get_object_or_404(Acquisition.objects.filter(id=id))
-    # acquisition = get_object_or_404(Acquisition.objects.filter(id=id).select_related('office__id', 'osbu_advisor__id'))
     return render(request, 'acquisitions/acquisition.html', {
         'acquisition': acquisition,
         'statuses':Acquisition.AWARD_STATUS_CHOICES
