@@ -2,18 +2,18 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from .models import Acquisition
+from .models import Acquisition, AwardStatus
 from .forms import AcquisitionForm
 
 # Create your views here.
 def home(request):
     acquisitions = Acquisition.objects.all().order_by('award_status')
     statuses = {}
-    for s in Acquisition.AWARD_STATUS_CHOICES:
-        statuses[s[0]] = {}
-        statuses[s[0]]["title"] = s[1]
-        statuses[s[0]]["count"] = 0
-        statuses[s[0]]["acquisitions"] = []
+    for s in AwardStatus.objects.all():
+        statuses[s.id] = {}
+        statuses[s.id]["title"] = s
+        statuses[s.id]["count"] = 0
+        statuses[s.id]["acquisitions"] = []
     for a in acquisitions:
         statuses[a.award_status]["count"] += 1
         statuses[a.award_status]["acquisitions"].append(a)

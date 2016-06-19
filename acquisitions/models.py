@@ -55,6 +55,19 @@ class COR(models.Model):
         verbose_name = "Contracting Officer Representative"
         verbose_name_plural = "Contracting Officer Representatives"
 
+
+class AwardStatus(models.Model):
+    status = models.CharField(max_length=50)
+    actor = models.CharField(max_length=50)
+
+    def __str__(self):
+        return "%s - %s" % (self.status, self.actor, )
+
+    class Meta:
+        # ordering = ['-status', 'actor']
+        verbose_name_plural = "Award Statuses"
+
+
 class Vendor(models.Model):
     name=models.CharField(max_length=200, blank=False)
     email=models.EmailField(blank=False)
@@ -211,37 +224,13 @@ class Acquisition(models.Model):
         ("Multi-Agency Contract", "Multi-Agency Contract"),
     )
 
-    AWARD_STATUS_CHOICES=(
-    # When updating these choices, create a manual migration in order to
-    # preserve the proper ordering
-        (1,"18F - Qual"),
-        (2,"OGC - Qual"),
-        (3,"OGP - Qual"),
-        (4,"18F - Agreement Scoping"),
-        (5,"18F - Agreement Approval"),
-        (6,"OGC - Agreement Approval"),
-        (7,"18F - RFQ Scoping"),
-        (8,"OGC - RFQ Scoping"),
-        (9,"OGP - RFQ Scoping"),
-        (10," 18F - RFQ Ready"),
-        (11," 18F - RFQ on Street"),
-        (12," 18F - Eval"),
-        (13," OGC - Eval"),
-        (14," OGP - Eval"),
-        (15," 18F - Award"),
-        (16," OGC - Award"),
-        (17," OGP - Award"),
-        (18," 18F - Post-award"),
-    )
-
     agency=models.ForeignKey(Agency, blank=False)
     subagency=models.ForeignKey(Subagency)
     contracting_officer=models.ForeignKey(ContractingOfficer, null=True, blank=True)
     contracting_officer_representative=models.ForeignKey(COR, null=True, blank=True)
     contracting_office=models.ForeignKey(ContractingOffice, null=True, blank=True)
     vendor=models.ForeignKey(Vendor, null=True, blank=True)
-    award_status=models.IntegerField(default=0,blank=False,
-                                choices=AWARD_STATUS_CHOICES)
+    award_status=models.ForeignKey(AwardStatus, default=0, blank=False)
     product_owner=models.CharField(max_length=50, null=True, blank=True)
     task=models.CharField(max_length=100, blank=False)
     rfq_id=models.IntegerField(null=True, blank=True)
