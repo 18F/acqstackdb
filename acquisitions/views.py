@@ -15,8 +15,8 @@ def home(request):
         statuses[s.id]["count"] = 0
         statuses[s.id]["acquisitions"] = []
     for a in acquisitions:
-        statuses[a.award_status]["count"] += 1
-        statuses[a.award_status]["acquisitions"].append(a)
+        statuses[a.award_status.id]["count"] += 1
+        statuses[a.award_status.id]["acquisitions"].append(a)
     return render(request, "acquisitions/index.html", {
         "statuses":statuses
         })
