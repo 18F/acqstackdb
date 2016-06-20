@@ -57,11 +57,17 @@ class COR(models.Model):
 
 
 class AwardStatus(models.Model):
+
     status = models.CharField(max_length=50)
     actor = models.CharField(max_length=50)
 
     def __str__(self):
-        return "%s - %s" % (self.status, self.actor, )
+        return "%s - (%s - %s)" % (self.ordering, self.status, self.actor,)
+
+    def save(self):
+        # Find the object that has the current before_status of that object
+        # Replace that AwardStatus object's before_status with the new AwardStatus as the before_status
+        pass
 
     class Meta:
         # ordering = ['-status', 'actor']
