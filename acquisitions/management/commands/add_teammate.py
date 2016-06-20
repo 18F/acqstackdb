@@ -14,8 +14,10 @@ class Command(BaseCommand):
         for username in options['username']:
             try:
                 user = User.objects.get(username=username)
-                user.is_admin = True
                 user.is_staff = True
                 user.is_superuser = True
                 print('Making %s a superuser!' % username)
                 user.save()
+
+            except User.DoesNotExist:
+                print("%s does not exist" % username)

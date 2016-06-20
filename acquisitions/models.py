@@ -64,11 +64,6 @@ class AwardStatus(models.Model):
     def __str__(self):
         return "%s - (%s - %s)" % (self.ordering, self.status, self.actor,)
 
-    def save(self):
-        # Find the object that has the current before_status of that object
-        # Replace that AwardStatus object's before_status with the new AwardStatus as the before_status
-        pass
-
     class Meta:
         # ordering = ['-status', 'actor']
         verbose_name_plural = "Award Statuses"
