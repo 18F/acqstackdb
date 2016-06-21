@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 
 
-class ClosepollTest(TestCase):
+class AddTeammateTest(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(username='test_user', email='', password='')
