@@ -34,7 +34,7 @@ The app should now be running at http://localhost:8000.
 
 ## Using docker-compose
 
-To use [docker-compose](https://docs.docker.com/compose/), you'll need to clone the repository and
+To use [docker-compose](https://docs.docker.com/compose/), you'll need to run the folloiwng commands:
 
 ``
 git clone https://github.com/18f/acqstackdb.git
