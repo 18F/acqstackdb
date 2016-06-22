@@ -50,3 +50,4 @@ def test_add_role_to_acquisition(acquisition, role):
     results = acquisition.roles.all()
     assert len(results) == 1
     assert results[0] == role
+    assert str(results[0]) == "Acquisition Lead - test_user"
