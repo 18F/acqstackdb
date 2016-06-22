@@ -93,22 +93,25 @@ class AwardStatus(models.Model):
                     current_before.is_before_id = self.id
                     current_before.save()
                 except self.DoesNotExist:
-                    # This is the new first award status in the process
+                    # This is now the first award status in the process
                     self.ordering = 0
                 # Find the object that this status is_before
                 next_status = AwardStatus.objects.get(track=self.track, id=self.is_before_id)
                 # Find all objects with that order or higher and increment all filtered objects by 1
-                higher_statuses = AwardStatus.objects.filter(ordering__gte=next_status.ordering).update(ordering=F('ordering') + 1)
+                later_statuses = AwardStatus.objects.filter(track=self.track, ordering__gte=next_status.ordering).update(ordering=F('ordering') + 1)
             elif statuses_length > 0:
-                # This is the last award status in the process
-                # TODO: should be one more than the highest order
-                # TODO: make previous last status point to this one
-                pass
+                # This is now the last award status in the process
+                last_status = AwardStatus.objects.filter(track=self.track).order_by('ordering').last()
+                last_status.is_before_id = self.id
+                last_status.save()
+                self.ordering = last_status.ordering + 1
             else:
                 # This is the first entry
                 self.ordering=0
                 self.is_before=None
         super(AwardStatus, self).save()
+
+    # TODO: add a handler for award status deletion
 
     class Meta:
         # ordering = ['-status', 'actor']
