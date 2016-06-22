@@ -1,17 +1,21 @@
 version: '2'
 services:
+  db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=acqstackdb
   web:
     build: .
     environment:
-      - DATABASE_URL=postgres://postgres:postgres@acqstackdb/postgres
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/acqstackdb
+      - SOCIAL_AUTH_GITHUB_TEAM_KEY=${SOCIAL_AUTH_GITHUB_TEAM_KEY}
+      - SOCIAL_AUTH_GITHUB_TEAM_SECRET=${SOCIAL_AUTH_GITHUB_TEAM_SECRET}
+      - SOCIAL_AUTH_GITHUB_TEAM_ID=${SOCIAL_AUTH_GITHUB_TEAM_ID}
+      - SOCIAL_AUTH_REDIRECT_IS_HTTPS=False
     command: bash run.sh
     ports:
       - "5000:5000"
-    depends_on:
-      - acqstackdb
     volumes:
       - .:/code
-    links:
-      - acqstackdb
-  acqstackdb:
-    image: postgres:latest
+    depends_on:
+      - db
