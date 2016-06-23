@@ -1,6 +1,5 @@
 from django.db import models
 from django.core.validators import RegexValidator
-from django.db.models import F
 
 # Create your models here.
 class Agency(models.Model):
@@ -58,7 +57,7 @@ class COR(models.Model):
 
 # Is the acquisition internal or external?
 class Track(models.Model):
-    name = models.CharField(max_length=30, default="External")
+    name = models.CharField(max_length=30)
 
     def __str__(self):
         return "%s" % (self.name)
@@ -68,50 +67,14 @@ class AwardStatus(models.Model):
     status = models.CharField(max_length=50)
     actor = models.CharField(max_length=50)
     track = models.ForeignKey(Track, blank=False)
-    ordering = models.IntegerField(editable=False)
-    is_before = models.ForeignKey('self', null=True, blank=True)
+    ordering = models.IntegerField(editable=False, null=True)
+    is_before = models.ForeignKey('self', null=True, blank=True, on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return "%s - %s" % (self.status, self.actor,)
 
     def natural_key(self):
         return (self.status, self.actor,)
-
-    def save(self):
-        # stvnrlly: I'm not sure if this should be in save() or pre_save() or whatever,
-        # but I'm not sure that it matters since it'll run for all objects either way
-        if not self.pk: # Only run if this entry didn't exist previously
-            statuses_length = len(AwardStatus.objects.all())
-            if statuses_length > 0 and self.is_before_id:
-                try:
-                    # Find object currently pointing to is_before
-                    current_before = AwardStatus.objects.get(track=self.track, is_before_id=self.is_before_id)
-                    # Borrow the is_before from that object
-                    self.is_before_id = current_before.is_before_id
-                    self.ordering = current_before.ordering + 1
-                    # Update object to point to new status
-                    current_before.is_before_id = self.id
-                    current_before.save()
-                except self.DoesNotExist:
-                    # This is now the first award status in the process
-                    self.ordering = 0
-                # Find the object that this status is_before
-                next_status = AwardStatus.objects.get(track=self.track, id=self.is_before_id)
-                # Find all objects with that order or higher and increment all filtered objects by 1
-                later_statuses = AwardStatus.objects.filter(track=self.track, ordering__gte=next_status.ordering).update(ordering=F('ordering') + 1)
-            elif statuses_length > 0:
-                # This is now the last award status in the process
-                last_status = AwardStatus.objects.filter(track=self.track).order_by('ordering').last()
-                last_status.is_before_id = self.id
-                last_status.save()
-                self.ordering = last_status.ordering + 1
-            else:
-                # This is the first entry
-                self.ordering=0
-                self.is_before=None
-        super(AwardStatus, self).save()
-
-    # TODO: add a handler for award status deletion
 
     class Meta:
         # ordering = ['-status', 'actor']
