@@ -14,12 +14,12 @@ This app is designed to run on Python 3.5.1. `pyenv` is recommended for managing
 git clone https://github.com/18f/acqstackdb.git
 cd acqstackdb
 createdb acqstackdb
-./manage.py migrate
 mkvirtualenv acqstackdb
 pip install -r requirements.txt
+./manage.py migrate
 ```
 
-Authentication is managed via GitHub OAuth, with access limited to a specified GitHub team. First, you'll need a [GitHub application](https://github.com/settings/applications/new). Next, you'll need a GitHub organization and [a team within it](https://help.github.com/articles/setting-up-teams/). Getting the team's ID is a bit tricky, unfortunately, and involves [querying the GitHub API](https://developer.github.com/v3/orgs/teams/#list-teams).
+Authentication is managed via GitHub OAuth, with access limited to a specified GitHub team. First, you'll need a [GitHub application](https://github.com/settings/applications/new). The callback URL for the application is `[your-url]/complete/github-team`. Next, you'll need a GitHub organization and [a team within it](https://help.github.com/articles/setting-up-teams/). Getting the team's ID is a bit tricky, unfortunately, and involves [querying the GitHub API](https://developer.github.com/v3/orgs/teams/#list-teams).
 
 At this point, you'll have the GitHub application's `Client ID` and `Client Secret`, along with your team's `ID`. Now, run the following:
 

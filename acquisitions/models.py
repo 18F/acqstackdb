@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import RegexValidator, ValidationError
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth.models import User
 from smart_selects.db_fields import ChainedForeignKey
 
 # Create your models here.
@@ -23,6 +24,7 @@ class Subagency(models.Model):
     class Meta:
         ordering = ('name',)
         verbose_name_plural = "Subagencies"
+
 
 class ContractingOffice(models.Model):
     name=models.CharField(max_length=100)
@@ -92,6 +94,16 @@ class Vendor(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Role(models.Model):
+    description = models.CharField(max_length=100, choices=(
+            ('P', 'Product Lead'), ('A', 'Acquisition Lead'), ('T', 'Technical Lead')
+        ), null=True, blank=True)
+    teammate = models.ForeignKey(User, blank=True, null=True)
+
+    def __str__(self):
+        return "%s - %s" % (self.get_description_display(), self.teammate)
 
 class Acquisition(models.Model):
     SET_ASIDE_CHOICES=(
@@ -241,6 +253,7 @@ class Acquisition(models.Model):
 
     agency=models.ForeignKey(Agency, blank=False)
     subagency=models.ForeignKey(Subagency)
+    roles = models.ManyToManyField(Role)
     contracting_officer=models.ForeignKey(ContractingOfficer, null=True, blank=True)
     contracting_officer_representative=models.ForeignKey(COR, null=True, blank=True)
     contracting_office=models.ForeignKey(ContractingOffice, null=True, blank=True)
@@ -270,6 +283,7 @@ class Acquisition(models.Model):
 
     def __str__(self):
         return "%s (%s)" % (self.task, self.subagency)
+
 
 class Evaluator(models.Model):
     name=models.CharField(max_length=100)
