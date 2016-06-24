@@ -25,4 +25,5 @@ urlpatterns = [
     url(r'^logout/$', views.logout_view, name="logout"),
     url(r'^admin/', include(admin.site.urls)),
     url('', include('social.apps.django_app.urls', namespace='social')),
+    url(r'^chaining/', include('smart_selects.urls')),
 ]

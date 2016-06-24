@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import RegexValidator
+from smart_selects.db_fields import ChainedForeignKey
 
 # Create your models here.
 class Agency(models.Model):
@@ -71,7 +72,7 @@ class AwardStatus(models.Model):
     is_before = models.ForeignKey('self', null=True, blank=True, on_delete=models.DO_NOTHING)
 
     def __str__(self):
-        return "%s - %s" % (self.status, self.actor,)
+        return "%s - %s (%s)" % (self.status, self.actor, self.track,)
 
     def natural_key(self):
         return (self.status, self.actor,)
@@ -243,8 +244,8 @@ class Acquisition(models.Model):
     contracting_officer_representative=models.ForeignKey(COR, null=True, blank=True)
     contracting_office=models.ForeignKey(ContractingOffice, null=True, blank=True)
     vendor=models.ForeignKey(Vendor, null=True, blank=True)
-    award_status=models.ForeignKey(AwardStatus, default=0, blank=False)
     track=models.ForeignKey(Track, blank=False)
+    award_status=ChainedForeignKey(AwardStatus, chained_field="track", chained_model_field="track", blank=False)
     product_owner=models.CharField(max_length=50, null=True, blank=True)
     task=models.CharField(max_length=100, blank=False)
     rfq_id=models.IntegerField(null=True, blank=True)
