@@ -1,5 +1,6 @@
 from django.db import models
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator, ValidationError
+from django.utils.translation import ugettext_lazy as _
 from smart_selects.db_fields import ChainedForeignKey
 
 # Create your models here.
@@ -262,6 +263,10 @@ class Acquisition(models.Model):
                                         choices=PROCUREMENT_METHOD_CHOICES, null=True, blank=True)
     award_date=models.DateField(null=True, blank=True)
     delivery_date=models.DateField(null=True, blank=True)
+
+    def clean(self):
+        if self.award_status.track != self.track:
+            raise ValidationError(_('Tracks are not equal.'))
 
     def __str__(self):
         return "%s (%s)" % (self.task, self.subagency)

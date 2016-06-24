@@ -19,6 +19,25 @@ def test_create_acquisition():
     assert str(acquisition) == "Build a test thing (Test Subagency - Test Agency)"
 
 @pytest.mark.django_db
+def test_correct_track():
+    with pytest.raises(ValidationError):
+        agency = Agency.objects.create(name="Test Agency")
+        subagency = Subagency.objects.create(name = "Test Subagency", agency=agency)
+        track = Track.objects.create(name = "Test Track")
+        track2 = Track.objects.create(name = "The Other Track")
+        award_status = AwardStatus.objects.create(status="Qualifying", actor='18F', track=track2)
+        acquisition = Acquisition.objects.create(
+            agency = agency,
+            subagency = subagency,
+            task = "Build a test thing",
+            award_status = award_status,
+            track = track
+        )
+
+        acquisition.full_clean()
+        assert str(acquisition) == "Build a test thing (Test Subagency - Test Agency)"
+
+@pytest.mark.django_db
 def test_create_vendor():
     vendor = Vendor.objects.create(
         name = "Test Vendor",
