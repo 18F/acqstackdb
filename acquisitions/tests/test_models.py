@@ -1,17 +1,19 @@
 import pytest
 from django.core.exceptions import ValidationError
-from acquisitions.models import Acquisition, Agency, Subagency, Vendor, AwardStatus
+from acquisitions.models import Acquisition, Agency, Subagency, Vendor, AwardStatus, Track
 
 @pytest.mark.django_db
 def test_create_acquisition():
     agency = Agency.objects.create(name="Test Agency")
     subagency = Subagency.objects.create(name = "Test Subagency", agency=agency)
-    award_status = AwardStatus.objects.create(status="Qualifying", actor='18F')
+    track = Track.objects.create(name = "Test Track")
+    award_status = AwardStatus.objects.create(status="Qualifying", actor='18F', track=track)
     acquisition = Acquisition.objects.create(
         agency = agency,
         subagency = subagency,
         task = "Build a test thing",
-        award_status = award_status
+        award_status = award_status,
+        track = track
     )
 
     assert str(acquisition) == "Build a test thing (Test Subagency - Test Agency)"
