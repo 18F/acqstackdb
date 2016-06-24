@@ -7,7 +7,7 @@ from .models import AwardStatus
 @receiver(post_save, sender=AwardStatus)
 def increment_ordering(instance, created, **kwargs):
     if created:
-        statuses_length = len(AwardStatus.objects.all())
+        statuses_length = len(AwardStatus.objects.filter(track=instance.track))
         if statuses_length > 1 and instance.is_before_id:
             try:
                 # Find object currently pointing to is_before
