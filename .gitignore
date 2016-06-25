@@ -93,3 +93,5 @@ ENV/
 .ropeproject
 staticfiles
 db.sqlite3
+acquisitions_manifest.yml
+cf-ssh.yml
