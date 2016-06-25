@@ -1,11 +1,13 @@
 import pytest
 from django.contrib.auth.models import User
-from acquisitions.models import Acquisition, Agency, Subagency, Vendor, Role, AwardStatus, Track
+from acquisitions.models import Acquisition, Agency, Subagency, Vendor, \
+                                Role, AwardStatus, Track
 
 
 @pytest.fixture
 def test_user():
-    user = User.objects.create_user(username='test_user', email='', password='')
+    user = User.objects.create_user(username='test_user',
+                                    email='', password='')
     return user
 
 
@@ -20,7 +22,8 @@ def acquisition():
     agency = Agency.objects.create(name="Test Agency")
     subagency = Subagency.objects.create(name="Test Subagency", agency=agency)
     track = Track.objects.create(name="Test Track")
-    award_status = AwardStatus.objects.create(status="Test Status", track=track)
+    award_status = AwardStatus.objects.create(status="Test Status",
+                                              track=track)
     acquisition = Acquisition.objects.create(
         agency=agency,
         subagency=subagency,
