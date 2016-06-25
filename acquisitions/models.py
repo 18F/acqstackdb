@@ -1,10 +1,13 @@
 from django.db import models
+from django.core.validators import RegexValidator, ValidationError
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
-from django.core.validators import RegexValidator
+from smart_selects.db_fields import ChainedForeignKey
+
 
 # Create your models here.
 class Agency(models.Model):
-    name=models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
@@ -12,9 +15,10 @@ class Agency(models.Model):
     class Meta:
         verbose_name_plural = "Agencies"
 
+
 class Subagency(models.Model):
-    name=models.CharField(max_length=100)
-    agency=models.ForeignKey(Agency)
+    name = models.CharField(max_length=100)
+    agency = models.ForeignKey(Agency)
 
     def __str__(self):
         return "%s - %s" % (self.name, self.agency)
@@ -25,7 +29,7 @@ class Subagency(models.Model):
 
 
 class ContractingOffice(models.Model):
-    name=models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
@@ -34,9 +38,10 @@ class ContractingOffice(models.Model):
         verbose_name = "Contracting Office"
         verbose_name_plural = "Contracting Offices"
 
+
 class ContractingOfficer(models.Model):
-    name=models.CharField(max_length=100)
-    contracting_office=models.ForeignKey(ContractingOffice)
+    name = models.CharField(max_length=100)
+    contracting_office = models.ForeignKey(ContractingOffice)
 
     def __str__(self):
         return "%s - %s" % (self.name, self.contracting_office)
@@ -46,8 +51,9 @@ class ContractingOfficer(models.Model):
         verbose_name = "Contracting Officer"
         verbose_name_plural = "Contracting Officers"
 
+
 class COR(models.Model):
-    name=models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
@@ -57,11 +63,40 @@ class COR(models.Model):
         verbose_name = "Contracting Officer Representative"
         verbose_name_plural = "Contracting Officer Representatives"
 
+
+# Is the acquisition internal or external?
+class Track(models.Model):
+    name = models.CharField(max_length=30)
+
+    def __str__(self):
+        return "%s" % (self.name)
+
+
+class AwardStatus(models.Model):
+
+    status = models.CharField(max_length=50)
+    actor = models.CharField(max_length=50)
+    track = models.ForeignKey(Track, blank=False)
+    ordering = models.IntegerField(editable=False, null=True)
+    is_before = models.ForeignKey('self', null=True, blank=True,
+                                  on_delete=models.DO_NOTHING)
+
+    def __str__(self):
+        return "%s - %s (%s)" % (self.status, self.actor, self.track,)
+
+    def natural_key(self):
+        return (self.status, self.actor,)
+
+    class Meta:
+        # ordering = ['-status', 'actor']
+        verbose_name_plural = "Award Statuses"
+
+
 class Vendor(models.Model):
-    name=models.CharField(max_length=200, blank=False)
-    email=models.EmailField(blank=False)
-    duns=models.CharField(max_length=9, blank=False, validators=[
-        RegexValidator(regex='^\d{9}$',message="DUNS number must be 9 digits")
+    name = models.CharField(max_length=200, blank=False)
+    email = models.EmailField(blank=False)
+    duns = models.CharField(max_length=9, blank=False, validators=[
+        RegexValidator(regex='^\d{9}$', message="DUNS number must be 9 digits")
     ])
 
     def __str__(self):
@@ -70,15 +105,18 @@ class Vendor(models.Model):
 
 class Role(models.Model):
     description = models.CharField(max_length=100, choices=(
-            ('P', 'Product Lead'), ('A', 'Acquisition Lead'), ('T', 'Technical Lead')
+            ('P', 'Product Lead'),
+            ('A', 'Acquisition Lead'),
+            ('T', 'Technical Lead')
         ), null=True, blank=True)
     teammate = models.ForeignKey(User, blank=True, null=True)
 
     def __str__(self):
         return "%s - %s" % (self.get_description_display(), self.teammate)
 
+
 class Acquisition(models.Model):
-    SET_ASIDE_CHOICES=(
+    SET_ASIDE_CHOICES = (
         ("AbilityOne", "AbilityOne"),
         ("HUBZone Small Business", "HUBZone Small Business"),
         ("Multiple Small Business Categories",
@@ -95,28 +133,29 @@ class Acquisition(models.Model):
         ("Woman-Owned Small Business", "Woman-Owned Small Business"),
     )
 
-    CONTRACT_TYPE_CHOICES=(
+    CONTRACT_TYPE_CHOICES = (
         ("Cost No Fee", "Cost No Fee"),
         ("Cost Plus Award Fee", "Cost Plus Award Fee"),
         ("Cost Plus Fixed Fee", "Cost Plus Fixed Fee"),
         ("Cost Plus Incentive Fee", "Cost Plus Incentive Fee"),
         ("Cost Sharing", "Cost Sharing"),
-        ("Fixed Price","Fixed Price"),
+        ("Fixed Price", "Fixed Price"),
         ("Fixed Price Award Fee", "Fixed Price Award Fee"),
         ("Fixed Price Incentive", "Fixed Price Incentive"),
-        ("Fixed Price Labor Hours","Fixed Price Labor Hours"),
-        ("Fixed Price Level of Effort","Fixed Price Level of Effort"),
-        ("Fixed Price Time and Materials","Fixed Price Time and Materials"),
+        ("Fixed Price Labor Hours", "Fixed Price Labor Hours"),
+        ("Fixed Price Level of Effort", "Fixed Price Level of Effort"),
+        ("Fixed Price Time and Materials", "Fixed Price Time and Materials"),
         ("Fixed Price with Economic Price Adjustment",
             "Fixed Price with Economic Price Adjustment"),
         ("Interagency Agreement", "Interagency Agreement"),
         ("Labor Hours", "Labor Hours"),
-        ("Labor Hours and Time and Materials","Labor Hours and Time and Materials"),
+        ("Labor Hours and Time and Materials",
+            "Labor Hours and Time and Materials"),
         ("Order Dependent", "Order Dependent"),
         ("Time and Materials", "Time and Materials"),
     )
 
-    COMPETITION_STRATEGY_CHOICES=(
+    COMPETITION_STRATEGY_CHOICES = (
         ("Sole Source", "Sole Source"),
         ("Full and Open", "Full and Open"),
         ("Set-Aside", "Set-Aside"),
@@ -173,7 +212,7 @@ class Acquisition(models.Model):
             "Partial Small Business Set-Aside"),
     )
 
-    PROCUREMENT_METHOD_CHOICES=(
+    PROCUREMENT_METHOD_CHOICES = (
         ("GSA Schedule", "GSA Schedule"),
         ("Government-wide Agency Contract-GWAC",
             "Government-wide Agency Contract-GWAC"),
@@ -223,62 +262,56 @@ class Acquisition(models.Model):
         ("Multi-Agency Contract", "Multi-Agency Contract"),
     )
 
-    AWARD_STATUS_CHOICES=(
-    # When updating these choices, create a manual migration in order to
-    # preserve the proper ordering
-        (1,"18F - Qual"),
-        (2,"OGC - Qual"),
-        (3,"OGP - Qual"),
-        (4,"18F - Agreement Scoping"),
-        (5,"18F - Agreement Approval"),
-        (6,"OGC - Agreement Approval"),
-        (7,"18F - RFQ Scoping"),
-        (8,"OGC - RFQ Scoping"),
-        (9,"OGP - RFQ Scoping"),
-        (10," 18F - RFQ Ready"),
-        (11," 18F - RFQ on Street"),
-        (12," 18F - Eval"),
-        (13," OGC - Eval"),
-        (14," OGP - Eval"),
-        (15," 18F - Award"),
-        (16," OGC - Award"),
-        (17," OGP - Award"),
-        (18," 18F - Post-award"),
-    )
-
-    agency=models.ForeignKey(Agency, blank=False)
-    subagency=models.ForeignKey(Subagency)
+    agency = models.ForeignKey(Agency, blank=False)
+    subagency = models.ForeignKey(Subagency)
     roles = models.ManyToManyField(Role)
-    contracting_officer=models.ForeignKey(ContractingOfficer, null=True, blank=True)
-    contracting_officer_representative=models.ForeignKey(COR, null=True, blank=True)
-    contracting_office=models.ForeignKey(ContractingOffice, null=True, blank=True)
-    vendor=models.ForeignKey(Vendor, null=True, blank=True)
-    award_status=models.IntegerField(default=0,blank=False,
-                                choices=AWARD_STATUS_CHOICES)
-    product_owner=models.CharField(max_length=50, null=True, blank=True)
-    task=models.CharField(max_length=100, blank=False)
-    rfq_id=models.IntegerField(null=True, blank=True)
-    period_of_performance=models.DateField(null=True, blank=True)
-    dollars=models.DecimalField(decimal_places=2, max_digits=14, null=True, blank=True)
-    set_aside_status=models.CharField(max_length=100, choices=SET_ASIDE_CHOICES, null=True, blank=True)
-    amount_of_competition=models.IntegerField(null=True, blank=True)
-    contract_type=models.CharField(max_length=100, choices=CONTRACT_TYPE_CHOICES, null=True, blank=True)
-    description=models.TextField(max_length=500, null=True, blank=True)
-    naics=models.IntegerField(null=True, blank=True)
-    competition_strategy=models.CharField(max_length=100,
-                                        choices=COMPETITION_STRATEGY_CHOICES, null=True, blank=True)
-    procurement_method=models.CharField(max_length=100,
-                                        choices=PROCUREMENT_METHOD_CHOICES, null=True, blank=True)
-    award_date=models.DateField(null=True, blank=True)
-    delivery_date=models.DateField(null=True, blank=True)
+    contracting_officer = models.ForeignKey(ContractingOfficer, null=True,
+                                            blank=True)
+    contracting_officer_representative = models.ForeignKey(COR, null=True,
+                                                           blank=True)
+    contracting_office = models.ForeignKey(ContractingOffice, null=True,
+                                           blank=True)
+    vendor = models.ForeignKey(Vendor, null=True, blank=True)
+    track = models.ForeignKey(Track, blank=False)
+    award_status = ChainedForeignKey(AwardStatus, chained_field="track",
+                                     chained_model_field="track", blank=False)
+    product_owner = models.CharField(max_length=50, null=True, blank=True)
+    task = models.CharField(max_length=100, blank=False)
+    rfq_id = models.IntegerField(null=True, blank=True)
+    period_of_performance = models.DateField(null=True, blank=True)
+    dollars = models.DecimalField(decimal_places=2, max_digits=14, null=True,
+                                  blank=True)
+    set_aside_status = models.CharField(max_length=100, null=True, blank=True,
+                                        choices=SET_ASIDE_CHOICES)
+    amount_of_competition = models.IntegerField(null=True, blank=True)
+    contract_type = models.CharField(max_length=100, null=True, blank=True,
+                                     choices=CONTRACT_TYPE_CHOICES)
+    description = models.TextField(max_length=500, null=True, blank=True)
+    naics = models.IntegerField(null=True, blank=True)
+    competition_strategy = models.CharField(
+            max_length=100,
+            null=True,
+            blank=True,
+            choices=COMPETITION_STRATEGY_CHOICES)
+    procurement_method = models.CharField(
+            max_length=100,
+            null=True,
+            blank=True,
+            choices=PROCUREMENT_METHOD_CHOICES)
+    award_date = models.DateField(null=True, blank=True)
+    delivery_date = models.DateField(null=True, blank=True)
+
+    def clean(self):
+        if self.award_status.track != self.track:
+            raise ValidationError(_('Tracks are not equal.'))
 
     def __str__(self):
         return "%s (%s)" % (self.task, self.subagency)
 
 
 class Evaluator(models.Model):
-    name=models.CharField(max_length=100)
-    acquisition=models.ManyToManyField(Acquisition)
+    name = models.CharField(max_length=100)
+    acquisition = models.ManyToManyField(Acquisition)
 
     def __str__(self):
         return self.name
@@ -286,8 +319,9 @@ class Evaluator(models.Model):
     class Meta:
         ordering = ('name',)
 
+
 class Release(models.Model):
-    acquisition=models.ForeignKey(Acquisition)
+    acquisition = models.ForeignKey(Acquisition)
 
     def __str__(self):
         return self.id
