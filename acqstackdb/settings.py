@@ -43,6 +43,7 @@ INSTALLED_APPS = (
 
     'floppyforms',
     'social.apps.django_app.default',
+    'smart_selects'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -85,7 +86,9 @@ WSGI_APPLICATION = 'acqstackdb.wsgi.application'
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
-DATABASES = {'default': dj_database_url.config(default="postgres://localhost/acqstackdb")}
+DATABASES = {'default': dj_database_url.config(
+        default="postgres://localhost/acqstackdb"
+        )}
 
 
 # Internationalization
@@ -119,11 +122,16 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # https://github.com/omab/python-social-auth
 
 SOCIAL_AUTH_GITHUB_TEAM_KEY = os.environ.get("SOCIAL_AUTH_GITHUB_TEAM_KEY")
-SOCIAL_AUTH_GITHUB_TEAM_SECRET = os.environ.get("SOCIAL_AUTH_GITHUB_TEAM_SECRET")
+SOCIAL_AUTH_GITHUB_TEAM_SECRET = os.environ.get(
+        "SOCIAL_AUTH_GITHUB_TEAM_SECRET"
+    )
 SOCIAL_AUTH_GITHUB_TEAM_ID = os.environ.get("SOCIAL_AUTH_GITHUB_TEAM_ID")
 SOCIAL_AUTH_GITHUB_TEAM_SCOPE = ['read:org']
 
-SOCIAL_AUTH_REDIRECT_IS_HTTPS = os.environ.get("SOCIAL_AUTH_REDIRECT_IS_HTTPS", default="True")
+SOCIAL_AUTH_REDIRECT_IS_HTTPS = os.environ.get(
+        "SOCIAL_AUTH_REDIRECT_IS_HTTPS",
+        default="True"
+    )
 # os.environ returns a string rather than a boolean
 if str.lower(SOCIAL_AUTH_REDIRECT_IS_HTTPS) == "false":
     SOCIAL_AUTH_REDIRECT_IS_HTTPS = False

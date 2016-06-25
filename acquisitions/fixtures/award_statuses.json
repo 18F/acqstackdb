@@ -1,0 +1,156 @@
+[
+  {
+    "model": "acquisitions.AwardStatus",
+    "fields": {
+      "status": "Qualifying",
+      "actor": "18F"
+    }
+  },
+  {
+    "model": "acquisitions.AwardStatus",
+    "fields": {
+      "status": "Agreement Scoping",
+      "actor": "18F"
+    }
+  },
+  {
+    "model": "acquisitions.AwardStatus",
+    "fields": {
+      "status": "Agreement Approval",
+      "actor": "18F"
+    }
+  },
+  {
+    "model": "acquisitions.AwardStatus",
+    "fields": {
+      "status": "Agreement Approval",
+      "actor": "OGC"
+    }
+  },
+  {
+    "model": "acquisitions.AwardStatus",
+    "fields": {
+      "status": "Agreement Approval",
+      "actor": "AAS"
+    }
+  },
+  {
+    "model": "acquisitions.AwardStatus",
+    "fields": {
+      "status": "Agreement Approval",
+      "actor": "Client"
+    }
+  },
+  {
+    "model": "acquisitions.AwardStatus",
+    "fields": {
+      "status": "Staging",
+      "actor": ""
+    }
+  },
+  {
+    "model": "acquisitions.AwardStatus",
+    "fields": {
+      "status": "RFQ Preparation",
+      "actor": "18F"
+    }
+  },
+  {
+    "model": "acquisitions.AwardStatus",
+    "fields": {
+      "status": "RFQ Approval",
+      "actor": "18F"
+    }
+  },
+  {
+    "model": "acquisitions.AwardStatus",
+    "fields": {
+      "status": "RFQ Approval",
+      "actor": "OGC"
+    }
+  },
+  {
+    "model": "acquisitions.AwardStatus",
+    "fields": {
+      "status": "RFQ Approval",
+      "actor": "AAS"
+    }
+  },
+  {
+    "model": "acquisitions.AwardStatus",
+    "fields": {
+      "status": "RFQ Approval",
+      "actor": "AMD"
+    }
+  },
+  {
+    "model": "acquisitions.AwardStatus",
+    "fields": {
+      "status": "RFQ Approval",
+      "actor": "Client"
+    }
+  },
+  {
+    "model": "acquisitions.AwardStatus",
+    "fields": {
+      "status": "Staging",
+      "actor": ""
+    }
+  },
+  {
+    "model": "acquisitions.AwardStatus",
+    "fields": {
+      "status": "RFQ on Street",
+      "actor": ""
+    }
+  },
+  {
+    "model": "acquisitions.AwardStatus",
+    "fields": {
+      "status": "Proposals Phase",
+      "actor": "Client"
+    }
+  },
+  {
+    "model": "acquisitions.AwardStatus",
+    "fields": {
+      "status": "Evaluations Phase",
+      "actor": ""
+    }
+  },
+  {
+    "model": "acquisitions.AwardStatus",
+    "fields": {
+      "status": "Award Approval",
+      "actor": "18F"
+    }
+  },
+  {
+    "model": "acquisitions.AwardStatus",
+    "fields": {
+      "status": "Award Approval",
+      "actor": "OGC"
+    }
+  },
+  {
+    "model": "acquisitions.AwardStatus",
+    "fields": {
+      "status": "Award Approval",
+      "actor": "AAS"
+    }
+  },
+  {
+    "model": "acquisitions.AwardStatus",
+    "fields": {
+      "status": "Award Approval",
+      "actor": "AMD"
+    }
+  },
+  {
+    "model": "acquisitions.AwardStatus",
+    "fields": {
+      "status": "Post-Award",
+      "actor": ""
+    }
+  }
+]
