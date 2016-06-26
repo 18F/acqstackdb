@@ -28,7 +28,7 @@ def acquisition(request, id):
     acquisition = get_object_or_404(Acquisition.objects.filter(id=id))
     return render(request, 'acquisitions/acquisition.html', {
         'acquisition': acquisition,
-        'statuses': Acquisition.AWARD_STATUS_CHOICES
+        'statuses': AwardStatus.objects.all()
         })
 
 

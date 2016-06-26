@@ -11,7 +11,7 @@
     <tr>
       {% for status in statuses %}
       <td title="{{ status.1 }}">
-        {% if status.0 == acquisition.award_status %} X {% else %} - {% endif %}
+        {% if status == acquisition.award_status %} X {% else %} - {% endif %}
       </td>
       {% endfor %}
     </tr>
