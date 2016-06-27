@@ -2,6 +2,7 @@ from django.db import models
 from django.core.validators import RegexValidator, ValidationError
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
+from kanban.models import KanbanProcess, KanbanCard, KanbanBoard
 from smart_selects.db_fields import ChainedForeignKey
 
 
@@ -65,27 +66,14 @@ class COR(models.Model):
 
 
 # Is the acquisition internal or external?
-class Track(models.Model):
-    name = models.CharField(max_length=30)
+class Track(KanbanBoard):
 
     def __str__(self):
         return "%s" % (self.name)
 
 
-class AwardStatus(models.Model):
-
-    status = models.CharField(max_length=50)
-    actor = models.CharField(max_length=50)
+class AwardStatus(KanbanProcess):
     track = models.ForeignKey(Track, blank=False)
-    ordering = models.IntegerField(editable=False, null=True)
-    is_before = models.ForeignKey('self', null=True, blank=True,
-                                  on_delete=models.DO_NOTHING)
-
-    def __str__(self):
-        return "%s - %s (%s)" % (self.status, self.actor, self.track,)
-
-    def natural_key(self):
-        return (self.status, self.actor,)
 
     class Meta:
         # ordering = ['-status', 'actor']
@@ -115,7 +103,7 @@ class Role(models.Model):
         return "%s - %s" % (self.get_description_display(), self.teammate)
 
 
-class Acquisition(models.Model):
+class Acquisition(KanbanCard):
     SET_ASIDE_CHOICES = (
         ("AbilityOne", "AbilityOne"),
         ("HUBZone Small Business", "HUBZone Small Business"),
@@ -262,6 +250,9 @@ class Acquisition(models.Model):
         ("Multi-Agency Contract", "Multi-Agency Contract"),
     )
 
+    track = models.ForeignKey(Track, blank=False)
+    award_status = ChainedForeignKey(AwardStatus, chained_field="track",
+                                     chained_model_field="track", blank=False)
     agency = models.ForeignKey(Agency, blank=False)
     subagency = models.ForeignKey(Subagency)
     roles = models.ManyToManyField(Role)
@@ -272,9 +263,6 @@ class Acquisition(models.Model):
     contracting_office = models.ForeignKey(ContractingOffice, null=True,
                                            blank=True)
     vendor = models.ForeignKey(Vendor, null=True, blank=True)
-    track = models.ForeignKey(Track, blank=False)
-    award_status = ChainedForeignKey(AwardStatus, chained_field="track",
-                                     chained_model_field="track", blank=False)
     product_owner = models.CharField(max_length=50, null=True, blank=True)
     task = models.CharField(max_length=100, blank=False)
     rfq_id = models.IntegerField(null=True, blank=True)
@@ -301,12 +289,12 @@ class Acquisition(models.Model):
     award_date = models.DateField(null=True, blank=True)
     delivery_date = models.DateField(null=True, blank=True)
 
+    def __str__(self):
+        return "%s (%s)" % (self.task, self.subagency)
+
     def clean(self):
         if self.award_status.track != self.track:
             raise ValidationError(_('Tracks are not equal.'))
-
-    def __str__(self):
-        return "%s (%s)" % (self.task, self.subagency)
 
 
 class Evaluator(models.Model):
