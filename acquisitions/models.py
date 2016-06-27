@@ -2,7 +2,7 @@ from django.db import models
 from django.core.validators import RegexValidator, ValidationError
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
-from kanban.models import KanbanProcess, KanbanCard, KanbanBoard
+from kanban.models import KanbanProcess, KanbanCard, KanbanBoard, KanbanHistory
 from smart_selects.db_fields import ChainedForeignKey
 
 
@@ -295,6 +295,11 @@ class Acquisition(KanbanCard):
     def clean(self):
         if self.award_status.track != self.track:
             raise ValidationError(_('Tracks are not equal.'))
+
+
+class History(KanbanHistory):
+    name = models.ForeignKey(Acquisition, blank=False)
+    status = models.ForeignKey(AwardStatus, blank=False)
 
 
 class Evaluator(models.Model):

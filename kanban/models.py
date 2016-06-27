@@ -38,3 +38,10 @@ class KanbanCard(models.Model):
 
     class Meta:
         abstract = True
+
+
+class KanbanHistory(models.Model):
+    days = models.IntegerField(default=0)
+
+    class Meta:
+        abstract = True
