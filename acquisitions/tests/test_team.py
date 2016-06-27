@@ -22,7 +22,7 @@ def acquisition():
     agency = Agency.objects.create(name="Test Agency")
     subagency = Subagency.objects.create(name="Test Subagency", agency=agency)
     track = Track.objects.create(name="Test Track")
-    award_status = AwardStatus.objects.create(status="Test Status",
+    award_status = AwardStatus.objects.create(name="Test Status",
                                               track=track)
     acquisition = Acquisition.objects.create(
         agency=agency,

@@ -9,7 +9,7 @@ def test_create_acquisition():
     agency = Agency.objects.create(name="Test Agency")
     subagency = Subagency.objects.create(name="Test Subagency", agency=agency)
     track = Track.objects.create(name="Test Track")
-    award_status = AwardStatus.objects.create(status="Qualifying", actor='18F',
+    award_status = AwardStatus.objects.create(name="Qualifying", owner='18F',
                                               track=track)
     acquisition = Acquisition.objects.create(
         agency=agency,
@@ -31,8 +31,8 @@ def test_correct_track():
                                              agency=agency)
         track = Track.objects.create(name="Test Track")
         track2 = Track.objects.create(name="The Other Track")
-        award_status = AwardStatus.objects.create(status="Qualifying",
-                                                  actor='18F', track=track2)
+        award_status = AwardStatus.objects.create(name="Qualifying",
+                                                  owner='18F', track=track2)
         acquisition = Acquisition.objects.create(
             agency=agency,
             subagency=subagency,
