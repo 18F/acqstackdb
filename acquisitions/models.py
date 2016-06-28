@@ -81,10 +81,10 @@ class Stage(models.Model):
 class StageTrackThroughModel(OrderedModel):
     track = models.ForeignKey(Track)
     stage = models.ForeignKey(Stage)
-    order_with_respect_to = 'stage'
+    order_with_respect_to = 'track'
 
     class Meta:
-        ordering = ('stage', 'order')
+        ordering = ('track', 'order')
 
 
 class Actor(models.Model):
@@ -110,11 +110,8 @@ class Step(OrderedModel):
     def __str__(self):
         return "%s - %s (%s)" % (self.stage, self.actor, self.track,)
 
-    def natural_key(self):
-        return (self.status, self.actor,)
-
     class Meta(OrderedModel.Meta):
-        verbose_name_plural = "Award Statuses"
+        pass
 
 
 class Vendor(models.Model):
