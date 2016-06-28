@@ -1,0 +1,134 @@
+[
+  {
+    "model": "acquisitions.stage",
+    "pk": 1,
+    "fields": {
+      "name": "Qualifying",
+      "track": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "acquisitions.stage",
+    "pk": 2,
+    "fields": {
+      "name": "Agreements Scoping",
+      "track": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "acquisitions.stage",
+    "pk": 3,
+    "fields": {
+      "name": "Agreement Approval",
+      "track": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "acquisitions.stage",
+    "pk": 4,
+    "fields": {
+      "name": "Staging",
+      "track": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "acquisitions.stage",
+    "pk": 5,
+    "fields": {
+      "name": "RFQ Preparation",
+      "track": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "acquisitions.stage",
+    "pk": 6,
+    "fields": {
+      "name": "RFQ Approval",
+      "track": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "acquisitions.stage",
+    "pk": 7,
+    "fields": {
+      "name": "Staging II",
+      "track": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "acquisitions.stage",
+    "pk": 8,
+    "fields": {
+      "name": "RFQ on Street",
+      "track": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "acquisitions.stage",
+    "pk": 9,
+    "fields": {
+      "name": "Proposals Phase",
+      "track": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "acquisitions.stage",
+    "pk": 10,
+    "fields": {
+      "name": "Evaluations Phase",
+      "track": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "acquisitions.stage",
+    "pk": 11,
+    "fields": {
+      "name": "Award Approval",
+      "track": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "acquisitions.stage",
+    "pk": 12,
+    "fields": {
+      "name": "Post-Award",
+      "track": [
+        1,
+        2
+      ]
+    }
+  }
+]

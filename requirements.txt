@@ -4,6 +4,7 @@ defusedxml==0.4.1
 dj-database-url==0.4.1
 Django==1.9.6
 django-floppyforms==1.6.2
+django-ordered-model==1.1.0
 django-smart-selects==1.2.2
 Jinja2==2.8
 MarkupSafe==0.23

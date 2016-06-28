@@ -2,7 +2,8 @@ from django.db import models
 from django.core.validators import RegexValidator, ValidationError
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
-from smart_selects.db_fields import ChainedForeignKey
+from smart_selects.db_fields import ChainedForeignKey, ChainedManyToManyField
+from ordered_model.models import OrderedModel
 
 
 # Create your models here.
@@ -72,23 +73,47 @@ class Track(models.Model):
         return "%s" % (self.name)
 
 
-class AwardStatus(models.Model):
+class Stage(models.Model):
+    name = models.CharField(max_length=50)
+    track = models.ManyToManyField(Track)
 
-    status = models.CharField(max_length=50)
-    actor = models.CharField(max_length=50)
-    track = models.ForeignKey(Track, blank=False)
-    ordering = models.IntegerField(editable=False, null=True)
-    is_before = models.ForeignKey('self', null=True, blank=True,
-                                  on_delete=models.DO_NOTHING)
+
+class StageTrackThroughModel(OrderedModel):
+    track = models.ForeignKey(Track)
+    stage = models.ForeignKey(Stage)
+    order_with_respect_to = 'track'
+
+    class Meta:
+        ordering = ('track', 'order')
+
+
+class Actor(models.Model):
+    name = models.CharField(max_length=200, blank=False)
 
     def __str__(self):
-        return "%s - %s (%s)" % (self.status, self.actor, self.track,)
+        return "%s" % (self.name)
+
+
+class Step(OrderedModel):
+    actor = models.ForeignKey(Actor, blank=False)
+    track = models.ForeignKey(
+            Track,
+            blank=False,
+            related_name="%(class)s_track"
+        )
+    stages = ChainedForeignKey(
+            Stage,
+            chained_field="track",
+            chained_model_field="track"
+        )
+
+    def __str__(self):
+        return "%s - %s (%s)" % (self.stage, self.actor, self.track,)
 
     def natural_key(self):
         return (self.status, self.actor,)
 
-    class Meta:
-        # ordering = ['-status', 'actor']
+    class Meta(OrderedModel.Meta):
         verbose_name_plural = "Award Statuses"
 
 
@@ -272,9 +297,25 @@ class Acquisition(models.Model):
     contracting_office = models.ForeignKey(ContractingOffice, null=True,
                                            blank=True)
     vendor = models.ForeignKey(Vendor, null=True, blank=True)
-    track = models.ForeignKey(Track, blank=False)
-    award_status = ChainedForeignKey(AwardStatus, chained_field="track",
-                                     chained_model_field="track", blank=False)
+    track = models.ForeignKey(
+            Track,
+            blank=False,
+            related_name="%(class)s_track"
+        )
+    stage = ChainedForeignKey(
+            Track,
+            chained_field="track",
+            chained_model_field="track",
+            blank=False,
+            default=0
+        )
+    step = ChainedForeignKey(
+            Step,
+            chained_field="stage",
+            chained_model_field="stage",
+            blank=False,
+            default=0
+        )
     product_owner = models.CharField(max_length=50, null=True, blank=True)
     task = models.CharField(max_length=100, blank=False)
     rfq_id = models.IntegerField(null=True, blank=True)

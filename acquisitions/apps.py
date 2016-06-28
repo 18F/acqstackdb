@@ -1,9 +1,6 @@
 from django.apps import AppConfig
 
 
-class AwardStatusConfig(AppConfig):
+class AcquisitionConfig(AppConfig):
     name = 'acquisitions'
     verbose_name = 'Acquisitions'
-
-    def ready(self):
-        from . import signals
