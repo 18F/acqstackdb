@@ -75,16 +75,16 @@ class Track(models.Model):
 
 class Stage(models.Model):
     name = models.CharField(max_length=50)
-    track = models.ManyToManyField(Track)
+    track = models.ManyToManyField(Track, through="StageTrackThroughModel")
 
 
 class StageTrackThroughModel(OrderedModel):
     track = models.ForeignKey(Track)
     stage = models.ForeignKey(Stage)
-    order_with_respect_to = 'track'
+    order_with_respect_to = 'stage'
 
     class Meta:
-        ordering = ('track', 'order')
+        ordering = ('stage', 'order')
 
 
 class Actor(models.Model):
@@ -101,7 +101,7 @@ class Step(OrderedModel):
             blank=False,
             related_name="%(class)s_track"
         )
-    stages = ChainedForeignKey(
+    stage = ChainedForeignKey(
             Stage,
             chained_field="track",
             chained_model_field="track"
@@ -303,7 +303,7 @@ class Acquisition(models.Model):
             related_name="%(class)s_track"
         )
     stage = ChainedForeignKey(
-            Track,
+            Stage,
             chained_field="track",
             chained_model_field="track",
             blank=False,
@@ -343,7 +343,7 @@ class Acquisition(models.Model):
     delivery_date = models.DateField(null=True, blank=True)
 
     def clean(self):
-        if self.award_status.track != self.track:
+        if self.step.track != self.track:
             raise ValidationError(_('Tracks are not equal.'))
 
     def __str__(self):
