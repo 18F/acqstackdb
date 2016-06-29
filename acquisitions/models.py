@@ -73,18 +73,14 @@ class Track(models.Model):
         return "%s" % (self.name)
 
 
-class Stage(models.Model):
+class Stage(OrderedModel):
     name = models.CharField(max_length=50)
-    track = models.ManyToManyField(Track, through="StageTrackThroughModel")
 
+    def __str__(self):
+        return "%s" % (self.name)
 
-class StageTrackThroughModel(OrderedModel):
-    track = models.ForeignKey(Track)
-    stage = models.ForeignKey(Stage)
-    order_with_respect_to = 'track'
-
-    class Meta:
-        ordering = ('track', 'order')
+    class Meta(OrderedModel.Meta):
+        pass
 
 
 class Actor(models.Model):
@@ -95,23 +91,34 @@ class Actor(models.Model):
 
 
 class Step(OrderedModel):
-    actor = models.ForeignKey(Actor, blank=False)
-    track = models.ForeignKey(
-            Track,
-            blank=False,
-            related_name="%(class)s_track"
-        )
-    stage = ChainedForeignKey(
-            Stage,
-            chained_field="track",
-            chained_model_field="track"
-        )
+    actor = models.ForeignKey(
+        Actor,
+        blank=False
+    )
+    track = models.ManyToManyField(
+        Track,
+        blank=False,
+        through="stepTrackThroughModel"
+    )
+    stage = models.ForeignKey(
+        Stage,
+        blank=False
+    )
 
     def __str__(self):
-        return "%s - %s (%s)" % (self.stage, self.actor, self.track,)
+        return "%s - %s" % (self.stage, self.actor,)
 
     class Meta(OrderedModel.Meta):
         pass
+
+
+class StepTrackThroughModel(OrderedModel):
+    track = models.ForeignKey(Track)
+    step = models.ForeignKey(Step)
+    order_with_respect_to = 'track'
+
+    class Meta:
+        ordering = ('track', 'order')
 
 
 class Vendor(models.Model):
@@ -284,9 +291,8 @@ class Acquisition(models.Model):
         ("Multi-Agency Contract", "Multi-Agency Contract"),
     )
 
-    agency = models.ForeignKey(Agency, blank=False)
     subagency = models.ForeignKey(Subagency)
-    roles = models.ManyToManyField(Role)
+    roles = models.ManyToManyField(Role, blank=True)
     contracting_officer = models.ForeignKey(ContractingOfficer, null=True,
                                             blank=True)
     contracting_officer_representative = models.ForeignKey(COR, null=True,
@@ -299,19 +305,11 @@ class Acquisition(models.Model):
             blank=False,
             related_name="%(class)s_track"
         )
-    stage = ChainedForeignKey(
-            Stage,
-            chained_field="track",
-            chained_model_field="track",
-            blank=False,
-            default=0
-        )
     step = ChainedForeignKey(
             Step,
-            chained_field="stage",
-            chained_model_field="stage",
-            blank=False,
-            default=0
+            chained_field="track",
+            chained_model_field="track",
+            blank=False
         )
     product_owner = models.CharField(max_length=50, null=True, blank=True)
     task = models.CharField(max_length=100, blank=False)
@@ -338,10 +336,9 @@ class Acquisition(models.Model):
             choices=PROCUREMENT_METHOD_CHOICES)
     award_date = models.DateField(null=True, blank=True)
     delivery_date = models.DateField(null=True, blank=True)
-
-    def clean(self):
-        if self.step.track != self.track:
-            raise ValidationError(_('Tracks are not equal.'))
+    # def clean(self):
+    #     if self.step.track != self.track:
+    #         raise ValidationError(_('Tracks are not equal.'))
 
     def __str__(self):
         return "%s (%s)" % (self.task, self.subagency)

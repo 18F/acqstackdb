@@ -3,54 +3,84 @@
 {% block content %}
 <h1>Ongoing Acquisitions</h1>
 {% if request.user.is_authenticated %}
-<table>
-    <tbody>
+<div class="">
+  <a class="usa-button" href="/new">add new</a>
+  <a href="/logout">Log out</a>
+</div>
+<div class="">
+  <h2>Tracks</h2>
+  {% for track in data %}<a class="usa-button {% if forloop.counter == 1 %}usa-button-outline{% endif %} button-selector track-{{track}}">{{track}}</a>{% endfor %}
+</div>
+{% for track in data.items %}
+<div class="acq-track track-{{track.0}} {% if forloop.counter > 1 %}hidden{% endif %}">
+  <table>
+    <thead>
       <tr>
-        {% for status in statuses.items %}
-        <td class="status-{{ status.0 }}" title="{{status.1.title}}">
-          {{ status.1.count }}
-        </td>
+        <th></th>
+        {% for stage in track.1.items %}
+        {% if stage.1.steps|length > 0 %}
+          <th scope="col">
+            {{ stage.1.name }}
+          </th>
+        {% endif %}
         {% endfor %}
       </tr>
+    </thead>
+    <tbody>
+      {% for actor in actors %}
+        <tr>
+          <td>
+            {{ actor.name }}
+          </td>
+          {% for stage in track.1.items %}
+          {% if stage.1.steps|length > 0 %}
+            <td scope="col">
+              -
+            </td>
+          {% endif %}
+          {% endfor %}
+        </tr>
+      {% endfor %}
     </tbody>
   </table>
-<a class="usa-button" href="/new">add new</a>
-<a href="/logout">Log out</a>
-{% for status in statuses.items %}
-  <div class="status={{ status.0 }}">
-    <h2>{{ status.1.title }}</h2>
-    <hr />
-    {% if status.1.acquisitions|length > 0 %}
-    {% for acq in status.1.acquisitions %}
-    <div class="acq-content usa-grid">
-      <h3><a href="/acquisition/{{ acq.id }}">{{ acq.task }} ({{ acq.subagency }})</a></h3>
-      <div><span class="acq-field usa-width-one-third">Description</span><span class="acq-data usa-width-two-thirds">{{ acq.description | default:"—" }}</span></div>
-      <div><span class="acq-field usa-width-one-third">Value</span><span class="acq-data usa-width-two-thirds">{{ acq.dollars | default:"—"}}</span></div>
-      <div><span class="acq-field usa-width-one-third">Award Date</span><span class="acq-data usa-width-two-thirds">{{ acq.award_date | default:"—" }}</span></div>
-      {% if acq.award_status > 17 %}
-      <div><span class="acq-field usa-width-one-third">Vendor</span><span class="acq-data usa-width-two-thirds">{{ acq.vendor | default:"—" }}</span></div>
+  {% for stage in track.1.items %}
+    {% for step in stage.1.steps.items  %}
+      <h2>{{ stage.1.name }} -  {{ step.1.name }}</h2>
+      {% if step.1.acquisitions|length > 0 %}
+      {% for acq in step.1.acquisitions %}
+        {% include "acquisitions/includes/item.html" %}
+      {% endfor %}
+      {% else %}
+      <div class="acq-content-none usa-grid">
+        <h3>None</h3>
+      </div>
       {% endif %}
-      <div><span class="acq-field usa-width-one-third">Delivery Date</span><span class="acq-data usa-width-two-thirds">{{ acq.delivery_date | default:"—" }}</span></div>
-      <div><span class="acq-field usa-width-one-third">Period of Performance</span><span class="acq-data usa-width-two-thirds">{{ acq.period_of_performance | default:"—" }}</span></div>
-      <div><span class="acq-field usa-width-one-third">Contracting Office</span><span class="acq-data usa-width-two-thirds">{{ acq.contracting_office | default:"—" }}</span></div>
-      <div><span class="acq-field usa-width-one-third">Contracting Officer</span><span class="acq-data usa-width-two-thirds">{{ acq.contracting_officer | default:"—"}}</span></div>
-      <div><span class="acq-field usa-width-one-third">COR</span><span class="acq-data usa-width-two-thirds">{{ acq.cor | default:"—" }}</span></div>
-      <div><span class="acq-field usa-width-one-third">Product Owner</span><span class="acq-data usa-width-two-thirds">{{ acq.product_owner | default:"—" }}</span></div>
-      <div><span class="acq-field usa-width-one-third">Set-Aside Status</span><span class="acq-data usa-width-two-thirds">{{ acq.set_aside_status | default:"—" }}</span></div>
-      <div><span class="acq-field usa-width-one-third">Competition Strategy</span><span class="acq-data usa-width-two-thirds">{{ acq.amount_of_competition | default:"—" }}</span></div>
-      <div><span class="acq-field usa-width-one-third">Contract Type</span><span class="acq-data usa-width-two-thirds">{{ acq.contract_type | default:"—" }}</span></div>
-      <div><span class="acq-field usa-width-one-third">NAICS Code</span><span class="acq-data usa-width-two-thirds">{{ acq.naics | default:"—" }}</span></div>
-      <div><span class="acq-field usa-width-one-third">Procurement Method</span><span class="acq-data usa-width-two-thirds">{{ acq.procurement_method | default:"—" }}</span></div>
-    </div>
     {% endfor %}
-    {% else %}
-    <div class="acq-content usa-grid">
-      <h3>None</h3>
-    </div>
-    {% endif %}
-  </div>
+  {% endfor %}
+</div>
 {% endfor %}
 {% else %}
 <a href="{% url 'social:begin' 'github-team' %}?next={{ request.path }}">Log in</a>
 {% endif %}
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+  'use strict';
+
+  $(document).on('ready', function() {
+    $('.hidden').hide();
+  });
+
+  $('.button-selector').click(function() {
+    $('.button-selector').removeClass('usa-button-outline');
+    $(this).addClass('usa-button-outline');
+    var track = $(this).attr('class')
+      .split(' ')
+      .filter(function(i) {return i.search(/track/) >= 0;})
+      .join();
+    $('.acq-track').hide();
+    $('.acq-track.'+track).show();
+  });
+</script>
 {% endblock %}

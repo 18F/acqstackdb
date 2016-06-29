@@ -1,0 +1,1 @@
+[{"model": "acquisitions.step", "pk": 1, "fields": {"order": 0, "actor": 1, "stage": 1}}, {"model": "acquisitions.step", "pk": 2, "fields": {"order": 1, "actor": 1, "stage": 6}}, {"model": "acquisitions.step", "pk": 3, "fields": {"order": 2, "actor": 1, "stage": 5}}, {"model": "acquisitions.step", "pk": 4, "fields": {"order": 3, "actor": 1, "stage": 9}}]
