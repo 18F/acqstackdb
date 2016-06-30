@@ -67,7 +67,7 @@ class COR(models.Model):
 
 # Is the acquisition internal or external?
 class Track(models.Model):
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=50)
 
     def __str__(self):
         return "%s" % (self.name)

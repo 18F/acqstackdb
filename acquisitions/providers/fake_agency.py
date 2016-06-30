@@ -3,7 +3,7 @@ from faker.providers import BaseProvider
 
 
 class AgencyProvider(BaseProvider):
-    agency_parts = (
+    big_agency_parts = (
         (
             "Department of", "Office of", "Bureau of"
         ),
@@ -13,14 +13,18 @@ class AgencyProvider(BaseProvider):
         )
     )
 
+    medium_agency_parts = ()
+
+    small_agency_parts = ()
+
     extra_parts = (
         "Synergy", "Failure", "High-Profile Success", "First Aid", "Gravy",
         "Sandwiches", "Wine", "Budget", "Style"
     )
 
-    def agency(self):
+    def agency(self, size="large"):
         result = []
-        for part in self.agency_parts:
+        for part in self.big_agency_parts:
             result.append(self.random_element(part))
         if random.randint(0, 100) > 70:
             result.append("and")
