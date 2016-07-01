@@ -1,7 +1,8 @@
 import pytest
 from django.contrib.auth.models import User
-from acquisitions.models import Acquisition, Agency, Subagency, Vendor, \
-                                Role, Step, Stage, Track, Actor
+from acquisitions.models import Acquisition, Agency, Subagency,\
+                                Vendor, Step, StepTrackThroughModel, Stage,\
+                                Track, Actor, Role
 
 
 @pytest.fixture
@@ -26,11 +27,13 @@ def acquisition():
     actor = Actor.objects.create(name="Test Actor")
     step = Step.objects.create(
         stage=stage,
-        actor=actor,
+        actor=actor
+    )
+    through = StepTrackThroughModel.objects.create(
+        step=step,
         track=track
     )
     acquisition = Acquisition.objects.create(
-        agency=agency,
         subagency=subagency,
         task="Build a test thing",
         step=step,

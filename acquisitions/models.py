@@ -336,9 +336,10 @@ class Acquisition(models.Model):
             choices=PROCUREMENT_METHOD_CHOICES)
     award_date = models.DateField(null=True, blank=True)
     delivery_date = models.DateField(null=True, blank=True)
-    # def clean(self):
-    #     if self.step.track != self.track:
-    #         raise ValidationError(_('Tracks are not equal.'))
+
+    def clean(self):
+        if self.step.track != self.track:
+            raise ValidationError(_('Tracks are not equal.'))
 
     def __str__(self):
         return "%s (%s)" % (self.task, self.subagency)

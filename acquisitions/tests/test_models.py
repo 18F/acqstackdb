@@ -1,7 +1,8 @@
 import pytest
 from django.core.exceptions import ValidationError
 from acquisitions.models import Acquisition, Agency, Subagency,\
-                                Vendor, Step, Stage, Track, Actor
+                                Vendor, Step, StepTrackThroughModel, Stage,\
+                                Track, Actor
 
 
 @pytest.mark.django_db
@@ -15,6 +16,10 @@ def test_create_acquisition():
         stage=stage,
         actor=actor
     )
+    through = StepTrackThroughModel.objects.create(
+        step=step,
+        track=track
+    )
     acquisition = Acquisition.objects.create(
         subagency=subagency,
         task="Build a test thing",
@@ -25,33 +30,35 @@ def test_create_acquisition():
     assert str(acquisition) == "Build a test thing " + \
                                "(Test Subagency - Test Agency)"
 
-#
-# @pytest.mark.django_db
-# def test_correct_track():
-#     with pytest.raises(ValidationError):
-#         agency = Agency.objects.create(name="Test Agency")
-#         subagency = Subagency.objects.create(name="Test Subagency",
-#                                              agency=agency)
-#         track = Track.objects.create(name="Test Track")
-#         track2 = Track.objects.create(name="The Other Track")
-#         stage = Stage.objects.create(name="Test Stage")
-#         actor = Actor.objects.create(name="Test Actor")
-#         step = Step.objects.create(
-#             stage=stage,
-#             actor=actor,
-#             track=track
-#         )
-#         acquisition = Acquisition.objects.create(
-#             agency=agency,
-#             subagency=subagency,
-#             task="Build a test thing",
-#             step=step,
-#             track=track
-#         )
-#
-#         acquisition.full_clean()
-#         assert str(acquisition) == "Build a test thing " + \
-#                                    "(Test Subagency - Test Agency)"
+
+@pytest.mark.django_db
+def test_correct_track():
+    with pytest.raises(ValidationError):
+        agency = Agency.objects.create(name="Test Agency")
+        subagency = Subagency.objects.create(name="Test Subagency",
+                                             agency=agency)
+        track = Track.objects.create(name="Test Track")
+        track2 = Track.objects.create(name="The Other Track")
+        stage = Stage.objects.create(name="Test Stage")
+        actor = Actor.objects.create(name="Test Actor")
+        step = Step.objects.create(
+            stage=stage,
+            actor=actor
+        )
+        through = StepTrackThroughModel.objects.create(
+            step=step,
+            track=track2
+        )
+        acquisition = Acquisition.objects.create(
+            subagency=subagency,
+            task="Build a test thing",
+            step=step,
+            track=track
+        )
+
+        acquisition.full_clean()
+        assert str(acquisition) == "Build a test thing " + \
+                                   "(Test Subagency - Test Agency)"
 
 
 @pytest.mark.django_db
