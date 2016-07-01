@@ -6,6 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>{% block title %}Acqstack DB{% endblock %}</title>
     <link rel="stylesheet" href="{% static "css/uswds.min.css" %}">
+    <script src="{% static "js/jquery.min.js" %}"></script>
+    <script src="{% static "js/uswds.min.js" %}"></script>
+    {% block resources %}{% endblock %}
   </head>
   <body>
     <header class="usa-site-header" role="banner">
@@ -56,8 +59,6 @@
       </div>
     </div>
   </footer>
-    <script src="{% static "js/jquery.min.js" %}"></script>
-    <script src="{% static "js/uswds.min.js" %}"></script>
     {% block script %}{% endblock %}
   </body>
 </html>

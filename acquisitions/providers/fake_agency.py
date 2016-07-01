@@ -3,9 +3,9 @@ from faker.providers import BaseProvider
 
 
 class AgencyProvider(BaseProvider):
-    big_agency_parts = (
+    agency_parts = (
         (
-            "Department of", "Office of", "Bureau of"
+            "Department of", "Office of", "Bureau of",
         ),
         (
             "the Interior", "Administrating", "Hats", "Management", "Labor",
@@ -13,9 +13,21 @@ class AgencyProvider(BaseProvider):
         )
     )
 
-    medium_agency_parts = ()
+    big_agency_start = (
+        "Department of", "Office of", "Bureau of",
+    )
 
-    small_agency_parts = ()
+    big_agency_end = (
+        "Administration", "Agency",
+    )
+
+    medium_agency_end = (
+        "Division", "Section",
+    )
+
+    small_agency_end = (
+        "Region", "Office", "Room",
+    )
 
     extra_parts = (
         "Synergy", "Failure", "High-Profile Success", "First Aid", "Gravy",
@@ -24,7 +36,7 @@ class AgencyProvider(BaseProvider):
 
     def agency(self, size="large"):
         result = []
-        for part in self.big_agency_parts:
+        for part in self.agency_parts:
             result.append(self.random_element(part))
         if random.randint(0, 100) > 70:
             result.append("and")

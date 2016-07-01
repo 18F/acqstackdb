@@ -1,14 +1,15 @@
 {% extends "acquisitions/layout.html" %}
+{% load static from staticfiles %}
 
 {% block content %}
 {% load floppyforms %}
-<h1>New Acquisition</h1>
+<h1>New {{ item }}</h1>
 <form class="usa-form-large" action="." method="POST">
   {% csrf_token %}
   {% for field in form %}
     {% if field.errors %}<div class="usa-input-error">{% endif %}
       <label for="{{ field|id }}" {% if field.errors %}class="usa-input-error-label"{% endif %}>
-        {{ field.label }}:
+        {% if field.field.required %}* {% endif %}{{ field.label }}:
       </label>
       {% for error in field.errors %}
         <span class="usa-input-error-message" role="alert">{{ error }}</span>
@@ -21,4 +22,8 @@
     <button class="usa-button-big" type="submit">Submit</button>
   </div>
 </form>
+{% endblock %}
+
+{% block resources %}
+<script src="{% static "smart-selects/admin/js/chainedfk.js" %}"></script>
 {% endblock %}

@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from .models import Acquisition, Step, Stage, Track, Actor
-from .forms import AcquisitionForm
+from acquisitions import forms
 
 
 # Create your views here.
@@ -35,14 +35,13 @@ def home(request):
     for acquisition in acquisitions:
         data[acquisition.track.name][acquisition.step.stage.order]["steps"][acquisition.step.order]["acquisitions"].append(acquisition)
 
-    # print(data)
     return render(request, "acquisitions/index.html", {
         "data": data,
         "actors": actors
     })
 
 
-# @login_required
+@login_required
 def acquisition(request, id):
     acquisition = get_object_or_404(Acquisition.objects.filter(id=id))
     return render(request, 'acquisitions/acquisition.html', {
@@ -52,12 +51,32 @@ def acquisition(request, id):
 
 
 @login_required
-def new(request):
-    form = AcquisitionForm(request.POST or None)
+def new_index(request):
+    return render(request, 'acquisitions/new_index.html')
+
+
+@login_required
+def new(request, item):
+    forms_dict = {
+        "acquisition": forms.AcquisitionForm(request.POST or None),
+        "agency": forms.AgencyForm(request.POST or None),
+        "subagency": forms.SubagencyForm(request.POST or None),
+        "stage": forms.StageForm(request.POST or None),
+        "step": forms.StepForm(request.POST or None),
+        "track": forms.TrackForm(request.POST or None),
+        "actor": forms.ActorForm(request.POST or None)
+    }
+    try:
+        form = forms_dict[item]
+    except:
+        return render(request, "404.html")
     if form.is_valid():
         report = form.save()
         return redirect(home)
-    return render(request, "acquisitions/new.html", {'form': form})
+    return render(request, "acquisitions/new.html", {
+        'form': form,
+        'item': item
+        })
 
 
 def logout_view(request):
