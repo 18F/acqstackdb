@@ -4,7 +4,7 @@
 {% block content %}
 {% load floppyforms %}
 <h1>New {{ item }}</h1>
-<form class="usa-form-large" action="." method="POST">
+<form class="usa-form-large" action="/new/{{ item }}" method="POST">
   {% csrf_token %}
   {% for field in form %}
     {% if field.errors %}<div class="usa-input-error">{% endif %}

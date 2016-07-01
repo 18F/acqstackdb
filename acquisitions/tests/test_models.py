@@ -13,11 +13,9 @@ def test_create_acquisition():
     actor = Actor.objects.create(name="Test Actor")
     step = Step.objects.create(
         stage=stage,
-        actor=actor,
-        track=track
+        actor=actor
     )
     acquisition = Acquisition.objects.create(
-        agency=agency,
         subagency=subagency,
         task="Build a test thing",
         step=step,
@@ -27,33 +25,33 @@ def test_create_acquisition():
     assert str(acquisition) == "Build a test thing " + \
                                "(Test Subagency - Test Agency)"
 
-
-@pytest.mark.django_db
-def test_correct_track():
-    with pytest.raises(ValidationError):
-        agency = Agency.objects.create(name="Test Agency")
-        subagency = Subagency.objects.create(name="Test Subagency",
-                                             agency=agency)
-        track = Track.objects.create(name="Test Track")
-        track2 = Track.objects.create(name="The Other Track")
-        stage = Stage.objects.create(name="Test Stage")
-        actor = Actor.objects.create(name="Test Actor")
-        step = Step.objects.create(
-            stage=stage,
-            actor=actor,
-            track=track
-        )
-        acquisition = Acquisition.objects.create(
-            agency=agency,
-            subagency=subagency,
-            task="Build a test thing",
-            step=step,
-            track=track
-        )
-
-        acquisition.full_clean()
-        assert str(acquisition) == "Build a test thing " + \
-                                   "(Test Subagency - Test Agency)"
+#
+# @pytest.mark.django_db
+# def test_correct_track():
+#     with pytest.raises(ValidationError):
+#         agency = Agency.objects.create(name="Test Agency")
+#         subagency = Subagency.objects.create(name="Test Subagency",
+#                                              agency=agency)
+#         track = Track.objects.create(name="Test Track")
+#         track2 = Track.objects.create(name="The Other Track")
+#         stage = Stage.objects.create(name="Test Stage")
+#         actor = Actor.objects.create(name="Test Actor")
+#         step = Step.objects.create(
+#             stage=stage,
+#             actor=actor,
+#             track=track
+#         )
+#         acquisition = Acquisition.objects.create(
+#             agency=agency,
+#             subagency=subagency,
+#             task="Build a test thing",
+#             step=step,
+#             track=track
+#         )
+#
+#         acquisition.full_clean()
+#         assert str(acquisition) == "Build a test thing " + \
+#                                    "(Test Subagency - Test Agency)"
 
 
 @pytest.mark.django_db

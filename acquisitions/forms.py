@@ -22,9 +22,24 @@ class StageForm(forms.ModelForm):
 
 
 class StepForm(forms.ModelForm):
+    track = forms.ModelMultipleChoiceField(queryset=models.Track.objects.all())
+
     class Meta:
         model = models.Step
-        fields = ['actor']
+        exclude = []
+
+    def save(self, commit=True):
+        # step = super(StepForm, self).save()
+        form_data = self.cleaned_data
+        step = models.Step.objects.create(
+            stage=form_data["stage"],
+            actor=form_data["actor"]
+        )
+        for track in form_data["track"]:
+            models.StepTrackThroughModel.objects.create(
+                step=step,
+                track=track
+            )
 
 
 class AgencyForm(forms.ModelForm):
