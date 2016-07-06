@@ -3,8 +3,8 @@
 
 {% block content %}
 {% load floppyforms %}
-<h1>New {{ item }}</h1>
-<form class="usa-form-large" action="/new/{{ item }}" method="POST">
+<h1>{{ item }}</h1>
+<form class="usa-form-large" action="{{ action }}" method="POST">
   {% csrf_token %}
   {% for field in form %}
     {% if field.errors %}<div class="usa-input-error">{% endif %}

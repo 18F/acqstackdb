@@ -338,7 +338,9 @@ class Acquisition(models.Model):
     delivery_date = models.DateField(null=True, blank=True)
 
     def clean(self):
-        if self.step.track != self.track:
+        print(self.step.track.all())
+        print(self.track)
+        if self.track not in self.step.track.all():
             raise ValidationError(_('Tracks are not equal.'))
 
     def __str__(self):

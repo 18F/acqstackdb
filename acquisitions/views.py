@@ -49,6 +49,20 @@ def acquisition(request, id):
 
 
 @login_required
+def edit_acquisition(request, id):
+    instance = Acquisition.objects.get(id=id)
+    form = forms.AcquisitionForm(request.POST or None, instance=instance)
+    if form.is_valid():
+        report = form.save()
+        return redirect(acquisition, id=id)
+    return render(request, "acquisitions/new.html", {
+        'form': form,
+        'item': 'Edit acquisition',
+        'action': '/acquisition/'+id+'/edit'
+    })
+
+
+@login_required
 def new_index(request):
     return render(request, 'acquisitions/new_index.html')
 
@@ -73,7 +87,8 @@ def new(request, item):
         return redirect(home)
     return render(request, "acquisitions/new.html", {
         'form': form,
-        'item': item
+        'item': 'New '+item,
+        'action': '/new/'+item
         })
 
 
