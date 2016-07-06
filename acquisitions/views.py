@@ -30,7 +30,6 @@ def home(request):
                 "name": step.actor.name,
                 "acquisitions": []
             }
-            # data[track.name][step.stage.order]["actors"][step.order] = step.actor.name
 
     for acquisition in acquisitions:
         data[acquisition.track.name][acquisition.step.stage.order]["steps"][acquisition.step.order]["acquisitions"].append(acquisition)

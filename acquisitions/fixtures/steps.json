@@ -1,1 +1,290 @@
-[{"model": "acquisitions.step", "pk": 1, "fields": {"order": 0, "actor": 1, "stage": 1}}, {"model": "acquisitions.step", "pk": 2, "fields": {"order": 1, "actor": 1, "stage": 6}}, {"model": "acquisitions.step", "pk": 3, "fields": {"order": 2, "actor": 1, "stage": 5}}, {"model": "acquisitions.step", "pk": 4, "fields": {"order": 3, "actor": 1, "stage": 9}}]
+[
+  {
+    "model": "acquisitions.step",
+    "pk":1,
+    "fields": {
+      "order": 0,
+      "actor": 1,
+      "stage": 1
+    }
+  },
+  {
+    "model": "acquisitions.step",
+    "pk":2,
+    "fields": {
+      "order": 1,
+      "actor": 2,
+      "stage": 1
+    }
+  },
+  {
+    "model": "acquisitions.step",
+    "pk":3,
+    "fields": {
+      "order": 2,
+      "actor": 3,
+      "stage": 1
+    }
+  },
+  {
+    "model": "acquisitions.step",
+    "pk":4,
+    "fields": {
+      "order": 3,
+      "actor": 4,
+      "stage": 1
+    }
+  },
+  {
+    "model": "acquisitions.step",
+    "pk": 5,
+    "fields": {
+      "order": 4,
+      "actor": 5,
+      "stage": 1
+    }
+  },
+  {
+    "model": "acquisitions.step",
+    "pk": 6,
+    "fields": {
+      "order": 5,
+      "actor": 1,
+      "stage": 6
+    }
+  },
+  {
+    "model": "acquisitions.step",
+    "pk": 7,
+    "fields": {
+      "order": 6,
+      "actor": 1,
+      "stage": 5
+    }
+  },
+  {
+    "model": "acquisitions.step",
+    "pk": 8,
+    "fields": {
+      "order": 7,
+      "actor": 2,
+      "stage": 5
+    }
+  },
+  {
+    "model": "acquisitions.step",
+    "pk": 9,
+    "fields": {
+      "order": 8,
+      "actor": 3,
+      "stage": 5
+    }
+  },
+  {
+    "model": "acquisitions.step",
+    "pk": 10,
+    "fields": {
+      "order": 9,
+      "actor": 4,
+      "stage": 5
+    }
+  },
+  {
+    "model": "acquisitions.step",
+    "pk": 11,
+    "fields": {
+      "order": 10,
+      "actor": 5,
+      "stage": 5
+    }
+  },
+  {
+    "model": "acquisitions.step",
+    "pk": 12,
+    "fields": {
+      "order": 11,
+      "actor": 1,
+      "stage": 9
+    }
+  },
+  {
+    "model": "acquisitions.step",
+    "pk": 13,
+    "fields": {
+      "order": 12,
+      "actor": 1,
+      "stage": 3
+    }
+  },
+  {
+    "model": "acquisitions.step",
+    "pk": 14,
+    "fields": {
+      "order": 13,
+      "actor": 1,
+      "stage": 4
+    }
+  },
+  {
+    "model": "acquisitions.step",
+    "pk": 15,
+    "fields": {
+      "order": 14,
+      "actor": 2,
+      "stage": 4
+    }
+  },
+  {
+    "model": "acquisitions.step",
+    "pk": 16,
+    "fields": {
+      "order": 15,
+      "actor": 3,
+      "stage": 4
+    }
+  },
+  {
+    "model": "acquisitions.step",
+    "pk": 17,
+    "fields": {
+      "order": 16,
+      "actor": 4,
+      "stage": 4
+    }
+  },
+  {
+    "model": "acquisitions.step",
+    "pk": 18,
+    "fields": {
+      "order": 17,
+      "actor": 5,
+      "stage": 4
+    }
+  },
+  {
+    "model": "acquisitions.step",
+    "pk": 19,
+    "fields": {
+      "order": 18,
+      "actor": 1,
+      "stage": 10
+    }
+  },
+  {
+    "model": "acquisitions.step",
+    "pk": 20,
+    "fields": {
+      "order": 19,
+      "actor": 1,
+      "stage": 11
+    }
+  },
+  {
+    "model": "acquisitions.step",
+    "pk": 21,
+    "fields": {
+      "order": 20,
+      "actor": 1,
+      "stage": 8
+    }
+  },
+  {
+    "model": "acquisitions.step",
+    "pk": 22,
+    "fields": {
+      "order": 21,
+      "actor": 1,
+      "stage": 7
+    }
+  },
+  {
+    "model": "acquisitions.step",
+    "pk": 23,
+    "fields": {
+      "order": 22,
+      "actor": 2,
+      "stage": 7
+    }
+  },
+  {
+    "model": "acquisitions.step",
+    "pk": 24,
+    "fields": {
+      "order": 23,
+      "actor": 3,
+      "stage": 7
+    }
+  },
+  {
+    "model": "acquisitions.step",
+    "pk": 25,
+    "fields": {
+      "order": 24,
+      "actor": 4,
+      "stage": 7
+    }
+  },
+  {
+    "model": "acquisitions.step",
+    "pk": 26,
+    "fields": {
+      "order": 25,
+      "actor": 5,
+      "stage": 7
+    }
+  },
+  {
+    "model": "acquisitions.step",
+    "pk": 27,
+    "fields": {
+      "order": 26,
+      "actor": 1,
+      "stage": 12
+    }
+  },
+  {
+    "model": "acquisitions.step",
+    "pk": 28,
+    "fields": {
+      "order": 27,
+      "actor": 2,
+      "stage": 12
+    }
+  },
+  {
+    "model": "acquisitions.step",
+    "pk": 29,
+    "fields": {
+      "order": 28,
+      "actor": 3,
+      "stage": 12
+    }
+  },
+  {
+    "model": "acquisitions.step",
+    "pk": 30,
+    "fields": {
+      "order": 29,
+      "actor": 4,
+      "stage": 12
+    }
+  },
+  {
+    "model": "acquisitions.step",
+    "pk": 31,
+    "fields": {
+      "order": 30,
+      "actor": 5,
+      "stage": 12
+    }
+  },
+  {
+    "model": "acquisitions.step",
+    "pk": 32,
+    "fields": {
+      "order": 31,
+      "actor": 1,
+      "stage": 13
+    }
+  }
+]
