@@ -90,18 +90,13 @@ class StepTrackThroughFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.StepTrackThroughModel
 
+    step = factory.SubFactory(StepFactory)
     if len(models.Track.objects.all()) > 1:
         track = factory.Iterator(
             models.Track.objects.all()
         )
     else:
         track = factory.SubFactory(TrackFactory)
-    if len(models.Step.objects.all()) > 3:
-        step = factory.Iterator(
-            models.Step.objects.all()
-        )
-    else:
-        step = factory.SubFactory(StepFactory)
 
 
 class TrackWithStepFactory(TrackFactory):

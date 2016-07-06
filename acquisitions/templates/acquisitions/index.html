@@ -3,9 +3,11 @@
 {% block content %}
 <h1>Ongoing Acquisitions</h1>
 {% if request.user.is_authenticated %}
+<div class="user-info" style="float: right;">
+  Logged in as {{ user }}   <a class="usa-button" href="/logout">Log out</a>
+</div>
 <div class="">
-  <a class="usa-button" href="/new/acquisition">add new</a>
-  <a href="/logout">Log out</a>
+  <a class="usa-button" href="/new/acquisition">Add an acquisition</a>
 </div>
 <div class="">
   <h2>Tracks</h2>
@@ -64,7 +66,7 @@
 </div>
 {% endfor %}
 {% else %}
-<a href="{% url 'social:begin' 'github-team' %}?next={{ request.path }}">Log in</a>
+<a class="usa-button" href="{% url 'social:begin' 'github-team' %}?next={{ request.path }}">Log in</a>
 {% endif %}
 {% endblock %}
 

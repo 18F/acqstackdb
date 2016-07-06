@@ -15,7 +15,6 @@ def home(request):
     data = {}
     actors = Actor.objects.all()
 
-    # print(stages)
     for track in tracks:
         data[track.name] = {}
         for stage in stages:
