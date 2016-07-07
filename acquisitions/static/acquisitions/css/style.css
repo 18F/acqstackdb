@@ -1,0 +1,17 @@
+.usa-disclaimer-official {
+  padding-left: 3rem;
+}
+
+.usa-disclaimer-stage {
+  padding-right: 3rem;
+}
+
+.float-right {
+  float: right;
+}
+
+.table-link {
+  display: block;
+  text-decoration: none;
+  color: black;
+}

@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>{% block title %}Acqstack DB{% endblock %}</title>
     <link rel="stylesheet" href="{% static "css/uswds.min.css" %}">
+    <link rel="stylesheet" href="{% static "acquisitions/css/style.css" %}" media="screen" title="no title" charset="utf-8">
     <script src="{% static "js/jquery.min.js" %}"></script>
     <script src="{% static "js/uswds.min.js" %}"></script>
     {% block resources %}{% endblock %}
@@ -13,11 +14,11 @@
   <body>
     <header class="usa-site-header" role="banner">
       <div class="usa-disclaimer">
-        <span style="padding-left: 3rem;" class="usa-disclaimer-official">
+        <span class="usa-disclaimer-official">
           <img class="usa-flag_icon" alt="US flag signifying that this is a United States Federal Government website" src="{% static "img/us_flag_small.png" %}">
           An official website of the United States Government
         </span>
-        <span style="padding-right: 3rem;" class="usa-disclaimer-stage">This site is currently in alpha. <a href="https://18f.gsa.gov/dashboard/stages/#alpha">Learn more.</a></span>
+        <span class="usa-disclaimer-stage">This site is currently in alpha. <a href="https://18f.gsa.gov/dashboard/stages/#alpha">Learn more.</a></span>
       </div>
     </header>
     <div class="usa-grid-full">
