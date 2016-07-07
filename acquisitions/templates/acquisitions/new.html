@@ -9,7 +9,7 @@
   {% for field in form %}
     {% if field.errors %}<div class="usa-input-error">{% endif %}
       <label for="{{ field|id }}" {% if field.errors %}class="usa-input-error-label"{% endif %}>
-        {% if field.field.required %}* {% endif %}{{ field.label }}:
+        {{ field.label }} {% if field.field.required %}<span class="usa-additional_text">Required</span>{% endif %}:
       </label>
       {% for error in field.errors %}
         <span class="usa-input-error-message" role="alert">{{ error }}</span>

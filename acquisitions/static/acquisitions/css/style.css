@@ -6,6 +6,10 @@
   padding-right: 3rem;
 }
 
+.required {
+  color: red;
+}
+
 .float-right {
   float: right;
 }

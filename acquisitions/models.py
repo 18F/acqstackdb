@@ -292,6 +292,23 @@ class Acquisition(models.Model):
     )
 
     subagency = models.ForeignKey(Subagency)
+    task = models.CharField(max_length=100, blank=False)
+    description = models.TextField(max_length=500, null=True, blank=True)
+    track = models.ForeignKey(
+            Track,
+            blank=False,
+            related_name="%(class)s_track"
+    )
+    step = ChainedForeignKey(
+            Step,
+            chained_field="track",
+            chained_model_field="track",
+            blank=False
+    )
+    dollars = models.DecimalField(decimal_places=2, max_digits=14, null=True,
+                                  blank=True)
+    period_of_performance = models.DateField(null=True, blank=True)
+    product_owner = models.CharField(max_length=50, null=True, blank=True)
     roles = models.ManyToManyField(Role, blank=True)
     contracting_officer = models.ForeignKey(ContractingOfficer, null=True,
                                             blank=True)
@@ -300,30 +317,13 @@ class Acquisition(models.Model):
     contracting_office = models.ForeignKey(ContractingOffice, null=True,
                                            blank=True)
     vendor = models.ForeignKey(Vendor, null=True, blank=True)
-    track = models.ForeignKey(
-            Track,
-            blank=False,
-            related_name="%(class)s_track"
-        )
-    step = ChainedForeignKey(
-            Step,
-            chained_field="track",
-            chained_model_field="track",
-            blank=False
-        )
-    product_owner = models.CharField(max_length=50, null=True, blank=True)
-    task = models.CharField(max_length=100, blank=False)
     rfq_id = models.IntegerField(null=True, blank=True)
-    period_of_performance = models.DateField(null=True, blank=True)
-    dollars = models.DecimalField(decimal_places=2, max_digits=14, null=True,
-                                  blank=True)
+    naics = models.IntegerField(null=True, blank=True)
     set_aside_status = models.CharField(max_length=100, null=True, blank=True,
                                         choices=SET_ASIDE_CHOICES)
     amount_of_competition = models.IntegerField(null=True, blank=True)
     contract_type = models.CharField(max_length=100, null=True, blank=True,
                                      choices=CONTRACT_TYPE_CHOICES)
-    description = models.TextField(max_length=500, null=True, blank=True)
-    naics = models.IntegerField(null=True, blank=True)
     competition_strategy = models.CharField(
             max_length=100,
             null=True,
