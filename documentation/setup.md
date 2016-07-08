@@ -43,6 +43,8 @@ export SOCIAL_AUTH_REDIRECT_IS_HTTPS=False # to allow HTTP redirect to http://lo
 
 The app should now be running at http://localhost:8000.
 
+If you'd like to load some starter data, you have two options: fixtures and factories. To set up a skeleton that looks like our production site, `./manage.py loaddata acquisitions/fixtures/*.json` will pull in the tracks, stages, steps, and actors. For a wider-ranging randomized setup, you can use `./manage.py seed_database`.
+
 ## Using docker-compose
 
 To use [docker-compose](https://docs.docker.com/compose/), you'll need to run the folloiwng commands:

@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Per https://docs.docker.com/compose/startup-order/, we are going to use
 # wait-for-it (source: https://github.com/vishnubob/wait-for-it) as a wrapper
 # to ensure that postgres is ready to accept connections

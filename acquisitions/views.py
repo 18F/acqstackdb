@@ -70,10 +70,8 @@ def stages(request):
     if form.is_valid():
         stage = Stage.objects.get(name=request.POST.__getitem__('name'))
         if request.POST.__contains__('up'):
-            print('moving stage up')
             stage.up()
         elif request.POST.__contains__('down'):
-            print('moving stage down')
             stage.down()
         return redirect(stages)
     return render(request, 'acquisitions/stages.html', {
