@@ -10,6 +10,16 @@
   color: red;
 }
 
+.stages-form {
+  max-width: 100%;
+}
+
+.stages-form > button[type="submit"], h2 {
+  display: inline-block;
+  padding: 5px;
+  font-size: 2rem;
+}
+
 .float-right {
   float: right;
 }

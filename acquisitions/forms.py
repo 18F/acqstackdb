@@ -21,6 +21,10 @@ class StageForm(forms.ModelForm):
         fields = ['name']
 
 
+class HiddenStageForm(StageForm):
+    name = forms.CharField(widget=forms.HiddenInput())
+
+
 class StepForm(forms.ModelForm):
     track = forms.ModelMultipleChoiceField(queryset=models.Track.objects.all())
 

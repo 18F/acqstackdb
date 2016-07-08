@@ -25,6 +25,7 @@ urlpatterns = [
         views.edit_acquisition,
         name='edit acquisition'
         ),
+    url(r'^stages$', views.stages, name='stages'),
     url(r'^new/$', views.new_index, name='new_index'),
     url(r'^new/(?P<item>\w*)$', views.new, name="new"),
     url(r'^logout/$', views.logout_view, name="logout"),

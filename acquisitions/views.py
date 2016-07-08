@@ -63,6 +63,26 @@ def edit_acquisition(request, id):
 
 
 @login_required
+def stages(request):
+    print(request.POST)
+    form = forms.HiddenStageForm(request.POST or None)
+    all_stages = Stage.objects.all()
+    if form.is_valid():
+        stage = Stage.objects.get(name=request.POST.__getitem__('name'))
+        if request.POST.__contains__('up'):
+            print('moving stage up')
+            stage.up()
+        elif request.POST.__contains__('down'):
+            print('moving stage down')
+            stage.down()
+        return redirect(stages)
+    return render(request, 'acquisitions/stages.html', {
+        'form': form,
+        'stages': all_stages
+    })
+
+
+@login_required
 def new_index(request):
     return render(request, 'acquisitions/new_index.html')
 

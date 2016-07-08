@@ -1,0 +1,17 @@
+{% extends "acquisitions/layout.html" %}
+
+{% block content %}
+{% load floppyforms %}
+<h1>Stages</h1>
+{% for stage in stages %}
+<form class="stages-form" action="/stages" method="post">
+  <h2>{{ stage.order }}) {{ stage }} </h2>
+  {% if not forloop.first %}<button class="usa-button-small" name="up" type="submit">&uarr;&uarr;&uarr;</button>{% endif %}
+  {% if not forloop.last %}<button class="usa-button-small" name="down" type="submit">&darr;&darr;&darr;</button>{% endif %}
+  {% csrf_token %}
+  {% form form using %}
+    {% formfield form.name with value=stage %}
+  {% endform %}
+</form>
+{% endfor %}
+{% endblock %}
