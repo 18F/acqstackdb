@@ -1,7 +1,8 @@
 import pytest
 from django.core.exceptions import ValidationError
 from acquisitions.models import Acquisition, Agency, Subagency,\
-                                Vendor, AwardStatus, Track
+                                Vendor, Step, StepTrackThroughModel, Stage,\
+                                Track, Actor
 
 
 @pytest.mark.django_db
@@ -9,13 +10,20 @@ def test_create_acquisition():
     agency = Agency.objects.create(name="Test Agency")
     subagency = Subagency.objects.create(name="Test Subagency", agency=agency)
     track = Track.objects.create(name="Test Track")
-    award_status = AwardStatus.objects.create(status="Qualifying", actor='18F',
-                                              track=track)
+    stage = Stage.objects.create(name="Test Stage")
+    actor = Actor.objects.create(name="Test Actor")
+    step = Step.objects.create(
+        stage=stage,
+        actor=actor
+    )
+    through = StepTrackThroughModel.objects.create(
+        step=step,
+        track=track
+    )
     acquisition = Acquisition.objects.create(
-        agency=agency,
         subagency=subagency,
         task="Build a test thing",
-        award_status=award_status,
+        step=step,
         track=track
     )
 
@@ -31,13 +39,20 @@ def test_correct_track():
                                              agency=agency)
         track = Track.objects.create(name="Test Track")
         track2 = Track.objects.create(name="The Other Track")
-        award_status = AwardStatus.objects.create(status="Qualifying",
-                                                  actor='18F', track=track2)
+        stage = Stage.objects.create(name="Test Stage")
+        actor = Actor.objects.create(name="Test Actor")
+        step = Step.objects.create(
+            stage=stage,
+            actor=actor
+        )
+        through = StepTrackThroughModel.objects.create(
+            step=step,
+            track=track2
+        )
         acquisition = Acquisition.objects.create(
-            agency=agency,
             subagency=subagency,
             task="Build a test thing",
-            award_status=award_status,
+            step=step,
             track=track
         )
 

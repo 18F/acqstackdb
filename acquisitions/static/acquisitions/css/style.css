@@ -1,0 +1,31 @@
+.usa-disclaimer-official {
+  padding-left: 3rem;
+}
+
+.usa-disclaimer-stage {
+  padding-right: 3rem;
+}
+
+.required {
+  color: red;
+}
+
+.stages-form {
+  max-width: 100%;
+}
+
+.stages-form > button[type="submit"], h2 {
+  display: inline-block;
+  padding: 5px;
+  font-size: 2rem;
+}
+
+.float-right {
+  float: right;
+}
+
+.table-link {
+  display: block;
+  text-decoration: none;
+  color: black;
+}

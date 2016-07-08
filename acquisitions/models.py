@@ -2,7 +2,8 @@ from django.db import models
 from django.core.validators import RegexValidator, ValidationError
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
-from smart_selects.db_fields import ChainedForeignKey
+from smart_selects.db_fields import ChainedForeignKey, ChainedManyToManyField
+from ordered_model.models import OrderedModel
 
 
 # Create your models here.
@@ -66,30 +67,58 @@ class COR(models.Model):
 
 # Is the acquisition internal or external?
 class Track(models.Model):
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=50)
 
     def __str__(self):
         return "%s" % (self.name)
 
 
-class AwardStatus(models.Model):
-
-    status = models.CharField(max_length=50)
-    actor = models.CharField(max_length=50)
-    track = models.ForeignKey(Track, blank=False)
-    ordering = models.IntegerField(editable=False, null=True)
-    is_before = models.ForeignKey('self', null=True, blank=True,
-                                  on_delete=models.DO_NOTHING)
+class Stage(OrderedModel):
+    name = models.CharField(max_length=50)
 
     def __str__(self):
-        return "%s - %s (%s)" % (self.status, self.actor, self.track,)
+        return "%s" % (self.name)
 
-    def natural_key(self):
-        return (self.status, self.actor,)
+    class Meta(OrderedModel.Meta):
+        pass
+
+
+class Actor(models.Model):
+    name = models.CharField(max_length=200, blank=False)
+
+    def __str__(self):
+        return "%s" % (self.name)
+
+
+class Step(OrderedModel):
+    actor = models.ForeignKey(
+        Actor,
+        blank=False
+    )
+    track = models.ManyToManyField(
+        Track,
+        blank=False,
+        through="stepTrackThroughModel"
+    )
+    stage = models.ForeignKey(
+        Stage,
+        blank=False
+    )
+
+    def __str__(self):
+        return "%s - %s" % (self.stage, self.actor,)
+
+    class Meta(OrderedModel.Meta):
+        pass
+
+
+class StepTrackThroughModel(OrderedModel):
+    track = models.ForeignKey(Track)
+    step = models.ForeignKey(Step)
+    order_with_respect_to = 'track'
 
     class Meta:
-        # ordering = ['-status', 'actor']
-        verbose_name_plural = "Award Statuses"
+        ordering = ('track', 'order')
 
 
 class Vendor(models.Model):
@@ -262,9 +291,25 @@ class Acquisition(models.Model):
         ("Multi-Agency Contract", "Multi-Agency Contract"),
     )
 
-    agency = models.ForeignKey(Agency, blank=False)
     subagency = models.ForeignKey(Subagency)
-    roles = models.ManyToManyField(Role)
+    task = models.CharField(max_length=100, blank=False)
+    description = models.TextField(max_length=500, null=True, blank=True)
+    track = models.ForeignKey(
+            Track,
+            blank=False,
+            related_name="%(class)s_track"
+    )
+    step = ChainedForeignKey(
+            Step,
+            chained_field="track",
+            chained_model_field="track",
+            blank=False
+    )
+    dollars = models.DecimalField(decimal_places=2, max_digits=14, null=True,
+                                  blank=True)
+    period_of_performance = models.DateField(null=True, blank=True)
+    product_owner = models.CharField(max_length=50, null=True, blank=True)
+    roles = models.ManyToManyField(Role, blank=True)
     contracting_officer = models.ForeignKey(ContractingOfficer, null=True,
                                             blank=True)
     contracting_officer_representative = models.ForeignKey(COR, null=True,
@@ -272,22 +317,13 @@ class Acquisition(models.Model):
     contracting_office = models.ForeignKey(ContractingOffice, null=True,
                                            blank=True)
     vendor = models.ForeignKey(Vendor, null=True, blank=True)
-    track = models.ForeignKey(Track, blank=False)
-    award_status = ChainedForeignKey(AwardStatus, chained_field="track",
-                                     chained_model_field="track", blank=False)
-    product_owner = models.CharField(max_length=50, null=True, blank=True)
-    task = models.CharField(max_length=100, blank=False)
     rfq_id = models.IntegerField(null=True, blank=True)
-    period_of_performance = models.DateField(null=True, blank=True)
-    dollars = models.DecimalField(decimal_places=2, max_digits=14, null=True,
-                                  blank=True)
+    naics = models.IntegerField(null=True, blank=True)
     set_aside_status = models.CharField(max_length=100, null=True, blank=True,
                                         choices=SET_ASIDE_CHOICES)
     amount_of_competition = models.IntegerField(null=True, blank=True)
     contract_type = models.CharField(max_length=100, null=True, blank=True,
                                      choices=CONTRACT_TYPE_CHOICES)
-    description = models.TextField(max_length=500, null=True, blank=True)
-    naics = models.IntegerField(null=True, blank=True)
     competition_strategy = models.CharField(
             max_length=100,
             null=True,
@@ -302,7 +338,9 @@ class Acquisition(models.Model):
     delivery_date = models.DateField(null=True, blank=True)
 
     def clean(self):
-        if self.award_status.track != self.track:
+        print(self.step.track.all())
+        print(self.track)
+        if self.track not in self.step.track.all():
             raise ValidationError(_('Tracks are not equal.'))
 
     def __str__(self):

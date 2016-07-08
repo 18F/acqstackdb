@@ -21,7 +21,13 @@ from acquisitions import views
 urlpatterns = [
     url(r'^$', views.home, name='home'),
     url(r'^acquisition/(?P<id>\d*)$', views.acquisition, name='acquisition'),
-    url(r'^new/$', views.new, name="new"),
+    url(r'^acquisition/(?P<id>\d*)/edit$',
+        views.edit_acquisition,
+        name='edit acquisition'
+        ),
+    url(r'^stages$', views.stages, name='stages'),
+    url(r'^new/$', views.new_index, name='new_index'),
+    url(r'^new/(?P<item>\w*)$', views.new, name="new"),
     url(r'^logout/$', views.logout_view, name="logout"),
     url(r'^admin/', include(admin.site.urls)),
     url('', include('social.apps.django_app.urls', namespace='social')),

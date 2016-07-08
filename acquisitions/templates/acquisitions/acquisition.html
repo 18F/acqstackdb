@@ -1,9 +1,9 @@
 {% extends "acquisitions/layout.html" %}
 
 {% block content %}
-<h1>{{acquisition.task}}</h1>
+<h1>{{acquisition.task}} <a class="usa-button float-right" href="/acquisition/{{acquisition.id}}/edit">Edit</a></h1>
 
-<h2>Status</h2>
+<h2>Status: <small> {{acquisition.step}}</small></h2>
 
 <h3>{{ acquisition.get_award_status_display }}</h3>
 <table class="usa-table-borderless">
@@ -11,7 +11,7 @@
     <tr>
       {% for status in statuses %}
       <td title="{{ status.1 }}">
-        {% if status == acquisition.award_status %} X {% else %} - {% endif %}
+        {% if status == acquisition.step %} X {% else %} - {% endif %}
       </td>
       {% endfor %}
     </tr>
@@ -23,20 +23,91 @@
 <table class="usa-table-borderless">
   <tbody>
     <tr>
-      <td scope="row">
-        Client
-      </td>
+      <td class="table-row-title" scope="row">Client</td>
+      <td>{{ acquisition.subagency }}</td>
+    </tr>
+    <tr>
+      <td class="table-row-title" scope="row">Product Owner</td>
+      <td>{{ acquisition.product_owner|default:'TBD' }}</td>
+    </tr>
+    <tr>
+      <td class="table-row-title" scope="row">Details</td>
+      <td>{{ acquisition.details|default:'TBD' }}</td>
+    </tr>
+    <tr class="divider">
       <td>
-        {{ acquisition.subagency }}
+
       </td>
     </tr>
     <tr>
-      <td>
-        Details
-      </td>
-      <td>
-        {{ acquisition.details }}
-      </td>
+      <td class="table-row-title" scope="row">Track</td>
+      <td>{{ acquisition.track }}</td>
+    </tr>
+    <tr>
+      <td class="table-row-title" scope="row">NAICS</td>
+      <td>{{ acquisition.naics|default:'TBD' }}</td>
+    </tr>
+    <tr>
+      <td class="table-row-title" scope="row">Team</td>
+      <td>{% for member in acquisition.roles.all %}
+        {% if forloop.last %}{{ member }}{% else %}{{ member }}<br />{% endif %}
+      {% endfor %}</td>
+    </tr>
+    <tr>
+      <td class="table-row-title" scope="row">Contracting Officer</td>
+      <td>{{ acquisition.contracting_officer|default:'TBD' }}</td>
+    </tr>
+    <tr>
+      <td class="table-row-title" scope="row">Contracting Office</td>
+      <td>{{ acquisition.contracting_office|default:'TBD' }}</td>
+    </tr>
+    <tr>
+      <td class="table-row-title" scope="row">COR</td>
+      <td>{{ acquisition.contracting_officer_representative|default:'TBD' }}</td>
+    </tr>
+    <tr>
+      <td class="table-row-title" scope="row">Vendor</td>
+      <td>{{ acquisition.vendor|default:'TBD' }}</td>
+    </tr>
+    <tr>
+      <td class="table-row-title" scope="row">RFQ Number</td>
+      <td>{{ acquisition.rfq_id|default:'TBD' }}</td>
+    </tr>
+    <tr>
+      <td class="table-row-title" scope="row">Period of Performance</td>
+      <td>{{ acquisition.period_of_performance|default:'TBD' }}</td>
+    </tr>
+    <tr>
+      <td class="table-row-title" scope="row">Cost</td>
+      <td>{{ acquisition.dollars|default:'TBD' }}</td>
+    </tr>
+    <tr>
+      <td class="table-row-title" scope="row">Set-Aside Status</td>
+      <td>{{ acquisition.set_aside_status|default:'TBD' }}</td>
+    </tr>
+    <tr>
+      <td class="table-row-title" scope="row">Amount of Competition</td>
+      <td>{{ acquisition.amount_of_competition|default:'TBD' }}</td>
+    </tr>
+    <tr>
+      <td class="table-row-title" scope="row">Contract Type</td>
+      <td>{{ acquisition.contract_type|default:'TBD' }}</td>
+    </tr>
+    <tr>
+      <td class="table-row-title" scope="row">Competition Strategy</td>
+      <td>{{ acquisition.competition_strategy|default:'TBD' }}</td>
+    </tr>
+    <tr>
+      <td class="table-row-title" scope="row">Procurement Method</td>
+      <td>{{ acquisition.procurement_method|default:'TBD' }}</td>
+    </tr>
+    <tr>
+      <td class="table-row-title" scope="row">Award Date</td>
+      <td>{{ acquisition.award_date|default:'TBD' }}</td>
+    </tr>
+    <tr>
+      <td class="table-row-title" scope="row">Delivery Date</td>
+      <td>{{ acquisition.delivery_date|default:'TBD' }}</td>
     </tr>
   </tbody>
 </table>

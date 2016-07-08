@@ -6,14 +6,60 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>{% block title %}Acqstack DB{% endblock %}</title>
     <link rel="stylesheet" href="{% static "css/uswds.min.css" %}">
+    <link rel="stylesheet" href="{% static "acquisitions/css/style.css" %}" media="screen" title="no title" charset="utf-8">
+    <script src="{% static "js/jquery.min.js" %}"></script>
+    <script src="{% static "js/uswds.min.js" %}"></script>
+    {% block resources %}{% endblock %}
   </head>
   <body>
+    <header class="usa-site-header" role="banner">
+      <div class="usa-disclaimer">
+        <span class="usa-disclaimer-official">
+          <img class="usa-flag_icon" alt="US flag signifying that this is a United States Federal Government website" src="{% static "img/us_flag_small.png" %}">
+          An official website of the United States Government
+        </span>
+        <span class="usa-disclaimer-stage">This site is currently in alpha. <a href="https://18f.gsa.gov/dashboard/stages/#alpha">Learn more.</a></span>
+      </div>
+    </header>
     <div class="usa-grid-full">
       <div class="usa-width-one-whole">
         {% block content %}{% endblock %}
       </div>
     </div>
-    <script src="{% static "js/jquery.min.js" %}"></script>
-    <script src="{% static "js/uswds.min.js" %}"></script>
+    <footer class="usa-footer usa-footer-slim usa-sans" role="contentinfo">
+    <div class="usa-grid usa-footer-return-to-top">
+      <a href="#">Return to top</a>
+    </div>
+    <div class="usa-footer-primary-section">
+      <div class="usa-grid-full">
+        <nav class="usa-footer-nav usa-width-one-whole">
+          <ul class="usa-unstyled-list">
+            <li class="usa-width-one-fourth usa-footer-primary-content">
+              <a class="usa-footer-primary-link" href="/">Home</a>
+            </li>
+            <li class="usa-width-one-fourth usa-footer-primary-content">
+              <a class="usa-footer-primary-link" href="https://pages.18f.gov/ads-bpa">Agile BPA</a>
+            </li>
+            <li class="usa-width-one-fourth usa-footer-primary-content">
+              <a class="usa-footer-primary-link" href="/">?????</a>
+            </li>
+            <li class="usa-width-one-fourth usa-footer-primary-content">
+              <a class="usa-footer-primary-link" href="https://18f.gsa.gov">18f.gsa.gov</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <div class="usa-footer-secondary_section">
+      <div class="usa-grid">
+        <div class="usa-footer-logo">
+          <img class="usa-footer-slim-logo-img" src="{% static "img/logo-img.png" %}" alt="Logo image">
+          <h3 class="usa-footer-slim-logo-heading">18F Acquisitions</h3>
+        </div>
+      </div>
+    </div>
+  </footer>
+    {% block script %}{% endblock %}
   </body>
 </html>

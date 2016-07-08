@@ -1,0 +1,16 @@
+[
+  {
+    "model": "acquisitions.track",
+    "pk": 1,
+    "fields": {
+      "name": "Internal"
+    }
+  },
+  {
+    "model": "acquisitions.track",
+    "pk": 2,
+    "fields": {
+      "name": "External"
+    }
+  }
+]

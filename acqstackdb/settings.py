@@ -43,7 +43,8 @@ INSTALLED_APPS = (
 
     'floppyforms',
     'social.apps.django_app.default',
-    'smart_selects'
+    'smart_selects',
+    'ordered_model',
 )
 
 MIDDLEWARE_CLASSES = (
