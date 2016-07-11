@@ -75,6 +75,7 @@ class Track(models.Model):
 
 class Stage(OrderedModel):
     name = models.CharField(max_length=50)
+    wip_limit = models.IntegerField(default=0)
 
     def __str__(self):
         return "%s" % (self.name)
