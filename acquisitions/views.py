@@ -20,6 +20,7 @@ def home(request):
         for stage in stages:
             data[track.name][stage.order] = {
                 "name": stage.name,
+                "wip_limit": stage.wip_limit,
                 "steps": {}
             }
 

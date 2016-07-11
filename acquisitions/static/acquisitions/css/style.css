@@ -10,6 +10,18 @@
   color: red;
 }
 
+.green {
+  color: green;
+}
+
+.red {
+  color: red;
+}
+
+.yellow {
+  color: yellow;
+}
+
 .stages-form {
   max-width: 100%;
 }

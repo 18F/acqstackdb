@@ -40,7 +40,7 @@
             <td scope="col" class="table-content">
               {% for step in stage.1.steps.items %}
               {% if step.1.name == actor.name %}
-              <a class="table-link" href="#{{ track.0 }}-{{ stage.1.name }}-{{ actor.name }}">{{ step.1.acquisitions|length }}</a>
+              <a class="table-link" href="#{{ track.0 }}-{{ stage.1.name }}-{{ actor.name }}">{{ step.1.acquisitions|length }}{% if step.1.wip_limit == 0 or step.1.wip_limit > step.1.acquisitions|length %}<span class="float-right green"> ✔︎{% elif step.1.wip_limit == step.1.acquisitions|length %} <span class="float-right yellow"> ●{% else %}<span class="float-right red"> 𝘅{% endif %}</span></a>
               {% endif %}
               {% endfor %}
             </td>
