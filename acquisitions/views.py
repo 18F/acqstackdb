@@ -21,6 +21,7 @@ def home(request):
             data[track.name][stage.order] = {
                 "name": stage.name,
                 "wip_limit": stage.wip_limit,
+                "total": acquisitions.filter(step__stage=stage),
                 "steps": {}
             }
 
