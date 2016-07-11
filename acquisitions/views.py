@@ -24,14 +24,18 @@ def home(request):
             }
 
     for step in steps:
-        for track in step.track.all():
-            data[track.name][step.stage.order]["steps"][step.order] = {
-                "name": step.actor.name,
+        for i in step.steptrackthroughmodel_set.all():
+            data[i.track.name][i.step.stage.order]["steps"][i.order] = {
+                "name": i.step.actor.name,
+                "wip_limit": i.wip_limit,
                 "acquisitions": []
             }
 
     for acquisition in acquisitions:
-        data[acquisition.track.name][acquisition.step.stage.order]["steps"][acquisition.step.order]["acquisitions"].append(acquisition)
+        acq_step = acquisition.step.steptrackthroughmodel_set.get(
+            track=acquisition.track
+        )
+        data[acquisition.track.name][acq_step.step.stage.order]["steps"][acq_step.order]["acquisitions"].append(acquisition)
 
     return render(request, "acquisitions/index.html", {
         "data": data,

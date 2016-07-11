@@ -90,7 +90,7 @@ class Actor(models.Model):
         return "%s" % (self.name)
 
 
-class Step(OrderedModel):
+class Step(models.Model):
     actor = models.ForeignKey(
         Actor,
         blank=False
@@ -98,7 +98,7 @@ class Step(OrderedModel):
     track = models.ManyToManyField(
         Track,
         blank=False,
-        through="stepTrackThroughModel"
+        through="StepTrackThroughModel"
     )
     stage = models.ForeignKey(
         Stage,
@@ -108,16 +108,17 @@ class Step(OrderedModel):
     def __str__(self):
         return "%s - %s" % (self.stage, self.actor,)
 
-    class Meta(OrderedModel.Meta):
+    class Meta:
         pass
 
 
 class StepTrackThroughModel(OrderedModel):
     track = models.ForeignKey(Track)
     step = models.ForeignKey(Step)
+    wip_limit = models.IntegerField(default=0)
     order_with_respect_to = 'track'
 
-    class Meta:
+    class Meta(OrderedModel.Meta):
         ordering = ('track', 'order')
 
 
