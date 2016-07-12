@@ -26,18 +26,18 @@ def home(request):
             }
 
     for step in steps:
-        for i in step.steptrackthroughmodel_set.all():
-            data[i.track.name][i.step.stage.order]["steps"][i.order] = {
-                "name": i.step.actor.name,
-                "wip_limit": i.wip_limit,
+        for s in step.steptrackthroughmodel_set.all():
+            data[s.track.name][s.step.stage.order]["steps"][s.order] = {
+                "name": s.step.actor.name,
+                "wip_limit": s.wip_limit,
                 "acquisitions": []
             }
 
-    for acquisition in acquisitions:
-        acq_step = acquisition.step.steptrackthroughmodel_set.get(
-            track=acquisition.track
+    for a in acquisitions:
+        acq_step = a.step.steptrackthroughmodel_set.get(
+            track=a.track
         )
-        data[acquisition.track.name][acq_step.step.stage.order]["steps"][acq_step.order]["acquisitions"].append(acquisition)
+        data[acq_step.track.name][acq_step.step.stage.order]["steps"][acq_step.order]["acquisitions"].append(a)
 
     return render(request, "acquisitions/index.html", {
         "data": data,

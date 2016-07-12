@@ -65,6 +65,7 @@ class StageFactory(factory.django.DjangoModelFactory):
         model = models.Stage
 
     name = factory.Faker("bs")
+    wip_limit = factory.Faker("random_digit_not_null")
 
 
 class ActorFactory(factory.django.DjangoModelFactory):
@@ -100,6 +101,7 @@ class StepTrackThroughFactory(factory.django.DjangoModelFactory):
         1,
         TrackFactory
     )
+    wip_limit = factory.Faker("random_digit_not_null")
 
 
 class TrackWithStepFactory(TrackFactory):
