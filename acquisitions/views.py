@@ -12,7 +12,7 @@ def home(request):
     tracks = Track.objects.all()
     stages = Stage.objects.all()
     steps = Step.objects.all()
-    data = {}
+    data = {"Overall": {}}
     actors = Actor.objects.all()
 
     for track in tracks:
@@ -24,10 +24,21 @@ def home(request):
                 "total": acquisitions.filter(step__stage=stage),
                 "steps": {}
             }
+            data["Overall"][stage.order] = {
+                "name": stage.name,
+                "wip_limit": stage.wip_limit,
+                "total": acquisitions.filter(step__stage=stage),
+                "steps": {}
+            }
 
     for step in steps:
         for s in step.steptrackthroughmodel_set.all():
             data[s.track.name][s.step.stage.order]["steps"][s.order] = {
+                "name": s.step.actor.name,
+                "wip_limit": s.wip_limit,
+                "acquisitions": []
+            }
+            data["Overall"][s.step.stage.order]["steps"][s.order] = {
                 "name": s.step.actor.name,
                 "wip_limit": s.wip_limit,
                 "acquisitions": []
@@ -70,7 +81,6 @@ def edit_acquisition(request, id):
 
 @login_required
 def stages(request):
-    print(request.POST)
     form = forms.HiddenStageForm(request.POST or None)
     all_stages = Stage.objects.all()
     if form.is_valid():
