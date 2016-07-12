@@ -125,6 +125,7 @@ class StepTrackThroughModel(OrderedModel):
     order_with_respect_to = 'track'
 
     class Meta(OrderedModel.Meta):
+        unique_together = ('track', 'step')
         ordering = ('track', 'order')
 
 

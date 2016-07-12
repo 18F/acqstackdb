@@ -5,13 +5,6 @@ from acquisitions.providers import fake_agency
 factory.Faker.add_provider(fake_agency.AgencyProvider)
 
 
-def iterate_or_create(model, limit, subfactory):
-    if len(model.objects.all()) > limit:
-        return factory.Iterator(model.objects.all())
-    else:
-        return factory.SubFactory(subfactory)
-
-
 class AgencyFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Agency
@@ -24,7 +17,7 @@ class SubagencyFactory(factory.django.DjangoModelFactory):
         model = models.Subagency
 
     name = factory.Faker("agency", size="medium")
-    agency = factory.SubFactory(AgencyFactory)
+    agency = factory.Iterator(models.Agency.objects.all())
 
 
 class ContractingOfficeFactory(factory.django.DjangoModelFactory):
@@ -39,10 +32,8 @@ class ContractingOfficerFactory(factory.django.DjangoModelFactory):
         model = models.ContractingOfficer
 
     name = factory.Faker("name")
-    contracting_office = iterate_or_create(
-        models.ContractingOffice,
-        2,
-        ContractingOfficeFactory
+    contracting_office = factory.Iterator(
+        models.ContractingOffice.objects.all()
     )
 
 
@@ -79,28 +70,16 @@ class StepFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Step
 
-    stage = iterate_or_create(
-        models.Stage,
-        3,
-        StageFactory
-    )
-    actor = iterate_or_create(
-        models.Actor,
-        3,
-        ActorFactory
-    )
+    stage = factory.Iterator(models.Stage.objects.all())
+    actor = factory.Iterator(models.Actor.objects.all())
 
 
 class StepTrackThroughFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.StepTrackThroughModel
 
-    step = factory.SubFactory(StepFactory)
-    track = iterate_or_create(
-        models.Track,
-        1,
-        TrackFactory
-    )
+    step = factory.Iterator(models.Step.objects.all())
+    track = factory.Iterator(models.Track.objects.all())
     wip_limit = factory.Faker("random_digit_not_null")
 
 
@@ -121,21 +100,9 @@ class AcquisitionFactory(factory.django.DjangoModelFactory):
         model = models.Acquisition
 
     task = factory.Faker("catch_phrase")
-    step = iterate_or_create(
-        models.Step,
-        5,
-        StepFactory
-    )
-    subagency = iterate_or_create(
-        models.Subagency,
-        2,
-        SubagencyFactory
-    )
-    track = iterate_or_create(
-        models.Track,
-        0,
-        TrackFactory
-    )
+    step = factory.Iterator(models.Step.objects.all())
+    subagency = factory.Iterator(models.Subagency.objects.all())
+    track = factory.Iterator(models.Track.objects.all())
 
 
 class EvaluatorFactory(factory.django.DjangoModelFactory):
