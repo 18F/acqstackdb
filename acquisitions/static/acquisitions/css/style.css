@@ -15,11 +15,12 @@
 }
 
 .red {
-  color: red;
+  color: #e00;
 }
 
 .yellow {
   color: yellow;
+  text-shadow: 0 0 5px black;
 }
 
 .stages-form {
