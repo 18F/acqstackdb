@@ -19,7 +19,7 @@ class AcquisitionAdmin(admin.ModelAdmin):
 
 class StepTrackThroughModelInline(OrderedTabularInline):
     model = StepTrackThroughModel
-    fields = ('track', 'order', 'move_up_down_links',)
+    fields = ('track', 'order', 'wip_limit', 'move_up_down_links',)
     readonly_fields = ('order', 'move_up_down_links',)
     extra = 1
     ordering = ('order',)

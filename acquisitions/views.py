@@ -20,18 +20,24 @@ def home(request):
         for stage in stages:
             data[track.name][stage.order] = {
                 "name": stage.name,
+                "wip_limit": stage.wip_limit,
+                "total": acquisitions.filter(step__stage=stage),
                 "steps": {}
             }
 
     for step in steps:
-        for track in step.track.all():
-            data[track.name][step.stage.order]["steps"][step.order] = {
-                "name": step.actor.name,
+        for s in step.steptrackthroughmodel_set.all():
+            data[s.track.name][s.step.stage.order]["steps"][s.order] = {
+                "name": s.step.actor.name,
+                "wip_limit": s.wip_limit,
                 "acquisitions": []
             }
 
-    for acquisition in acquisitions:
-        data[acquisition.track.name][acquisition.step.stage.order]["steps"][acquisition.step.order]["acquisitions"].append(acquisition)
+    for a in acquisitions:
+        acq_step = a.step.steptrackthroughmodel_set.get(
+            track=a.track
+        )
+        data[acq_step.track.name][acq_step.step.stage.order]["steps"][acq_step.order]["acquisitions"].append(a)
 
     return render(request, "acquisitions/index.html", {
         "data": data,

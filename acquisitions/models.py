@@ -8,7 +8,12 @@ from ordered_model.models import OrderedModel
 
 # Create your models here.
 class Agency(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, blank=False)
+    department = models.CharField(max_length=100, null=True)
+    omb_agency_code = models.IntegerField(null=True)
+    omb_bureau_code = models.IntegerField(null=True)
+    treasury_agency_code = models.IntegerField(null=True)
+    cgac_agency_code = models.IntegerField(null=True)
 
     def __str__(self):
         return self.name
@@ -18,7 +23,7 @@ class Agency(models.Model):
 
 
 class Subagency(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, blank=False)
     agency = models.ForeignKey(Agency)
 
     def __str__(self):
@@ -75,6 +80,7 @@ class Track(models.Model):
 
 class Stage(OrderedModel):
     name = models.CharField(max_length=50)
+    wip_limit = models.IntegerField(default=0, verbose_name="WIP Limit")
 
     def __str__(self):
         return "%s" % (self.name)
@@ -90,7 +96,7 @@ class Actor(models.Model):
         return "%s" % (self.name)
 
 
-class Step(OrderedModel):
+class Step(models.Model):
     actor = models.ForeignKey(
         Actor,
         blank=False
@@ -98,7 +104,7 @@ class Step(OrderedModel):
     track = models.ManyToManyField(
         Track,
         blank=False,
-        through="stepTrackThroughModel"
+        through="StepTrackThroughModel"
     )
     stage = models.ForeignKey(
         Stage,
@@ -108,16 +114,18 @@ class Step(OrderedModel):
     def __str__(self):
         return "%s - %s" % (self.stage, self.actor,)
 
-    class Meta(OrderedModel.Meta):
+    class Meta:
         pass
 
 
 class StepTrackThroughModel(OrderedModel):
     track = models.ForeignKey(Track)
     step = models.ForeignKey(Step)
+    wip_limit = models.IntegerField(default=0, verbose_name="WIP Limit")
     order_with_respect_to = 'track'
 
-    class Meta:
+    class Meta(OrderedModel.Meta):
+        unique_together = ('track', 'step')
         ordering = ('track', 'order')
 
 
@@ -317,8 +325,8 @@ class Acquisition(models.Model):
     contracting_office = models.ForeignKey(ContractingOffice, null=True,
                                            blank=True)
     vendor = models.ForeignKey(Vendor, null=True, blank=True)
-    rfq_id = models.IntegerField(null=True, blank=True)
-    naics = models.IntegerField(null=True, blank=True)
+    rfq_id = models.IntegerField(null=True, blank=True, verbose_name="RFQ ID")
+    naics = models.IntegerField(null=True, blank=True, verbose_name="NAICS Code")
     set_aside_status = models.CharField(max_length=100, null=True, blank=True,
                                         choices=SET_ASIDE_CHOICES)
     amount_of_competition = models.IntegerField(null=True, blank=True)
