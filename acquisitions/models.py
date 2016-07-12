@@ -9,11 +9,12 @@ from ordered_model.models import OrderedModel
 # Create your models here.
 class Agency(models.Model):
     name = models.CharField(max_length=100, blank=False)
-    department = models.CharField(max_length=100, null=True)
-    omb_agency_code = models.IntegerField(null=True)
-    omb_bureau_code = models.IntegerField(null=True)
-    treasury_agency_code = models.IntegerField(null=True)
-    cgac_agency_code = models.IntegerField(null=True)
+    abbreviation = models.CharField(max_length=10, null=True, blank=True)
+    department = models.CharField(max_length=100, null=True, blank=True)
+    omb_agency_code = models.IntegerField(null=True, blank=True)
+    omb_bureau_code = models.IntegerField(null=True, blank=True)
+    treasury_agency_code = models.IntegerField(null=True, blank=True)
+    cgac_agency_code = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -24,6 +25,7 @@ class Agency(models.Model):
 
 class Subagency(models.Model):
     name = models.CharField(max_length=100, blank=False)
+    abbreviation = models.CharField(max_length=10, null=True, blank=True)
     agency = models.ForeignKey(Agency)
 
     def __str__(self):
@@ -326,7 +328,11 @@ class Acquisition(models.Model):
                                            blank=True)
     vendor = models.ForeignKey(Vendor, null=True, blank=True)
     rfq_id = models.IntegerField(null=True, blank=True, verbose_name="RFQ ID")
-    naics = models.IntegerField(null=True, blank=True, verbose_name="NAICS Code")
+    naics = models.IntegerField(
+        null=True,
+        blank=True,
+        verbose_name="NAICS Code"
+    )
     set_aside_status = models.CharField(max_length=100, null=True, blank=True,
                                         choices=SET_ASIDE_CHOICES)
     amount_of_competition = models.IntegerField(null=True, blank=True)
