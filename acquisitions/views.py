@@ -4,6 +4,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from .models import Acquisition, Step, Stage, Track, Actor
 from acquisitions import forms
+from collections import OrderedDict
 
 
 # Create your views here.
@@ -12,7 +13,8 @@ def home(request):
     tracks = Track.objects.all()
     stages = Stage.objects.all()
     steps = Step.objects.all()
-    data = {"Overall": {}}
+    data = OrderedDict()
+    data["Overall"] = {}
     actors = Actor.objects.all()
 
     for track in tracks:
