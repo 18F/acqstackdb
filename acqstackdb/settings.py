@@ -161,3 +161,9 @@ AUTHENTICATION_BACKENDS = (
 
 # Django Wiki
 SITE_ID = 1
+
+LOGIN_URL = "/login/github-team/?next=/"
+
+WIKI_ACCOUNT_HANDLING = False
+WIKI_ACCOUNT_SIGNUP_ALLOWED = False
+WIKI_ANONYMOUS = False
