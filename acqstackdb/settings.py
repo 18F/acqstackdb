@@ -45,6 +45,19 @@ INSTALLED_APPS = (
     'social.apps.django_app.default',
     'smart_selects',
     'ordered_model',
+
+    # django-wiki
+    'django.contrib.sites',
+    'django.contrib.humanize',
+    'django_nyt',
+    'mptt',
+    'sekizai',
+    'sorl.thumbnail',
+    'wiki',
+    'wiki.plugins.attachments',
+    'wiki.plugins.notifications',
+    'wiki.plugins.images',
+    'wiki.plugins.macros',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -75,6 +88,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'social.apps.django_app.context_processors.backends',
                 'social.apps.django_app.context_processors.login_redirect',
+                "sekizai.context_processors.sekizai",
             ],
         },
     },
@@ -115,6 +129,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "third-party/uswds/"),
     os.path.join(BASE_DIR, "third-party/jquery/"),
 ]
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
@@ -142,3 +157,7 @@ else:
 AUTHENTICATION_BACKENDS = (
     'social.backends.github.GithubTeamOAuth2',
 )
+
+
+# Django Wiki
+SITE_ID = 1

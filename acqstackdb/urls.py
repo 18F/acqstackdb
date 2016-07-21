@@ -18,6 +18,9 @@ from django.contrib import admin
 
 from acquisitions import views
 
+from wiki.urls import get_pattern as get_wiki_pattern
+from django_nyt.urls import get_pattern as get_nyt_pattern
+
 urlpatterns = [
     url(r'^$', views.home, name='home'),
     url(r'^acquisition/(?P<id>\d*)$', views.acquisition, name='acquisition'),
@@ -32,4 +35,6 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url('', include('social.apps.django_app.urls', namespace='social')),
     url(r'^chaining/', include('smart_selects.urls')),
+    url(r'^notifications/', get_nyt_pattern()),
+    url(r'^wiki/', get_wiki_pattern())
 ]
