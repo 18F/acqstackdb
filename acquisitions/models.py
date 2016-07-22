@@ -315,6 +315,7 @@ class Acquisition(models.Model):
             chained_model_field="track",
             blank=False
     )
+    public = models.BooleanField(default=False)
     dollars = models.DecimalField(decimal_places=2, max_digits=14, null=True,
                                   blank=True)
     period_of_performance = models.DateField(null=True, blank=True)
@@ -348,6 +349,7 @@ class Acquisition(models.Model):
             null=True,
             blank=True,
             choices=PROCUREMENT_METHOD_CHOICES)
+    release_date = models.DateField(null=True, blank=True)
     award_date = models.DateField(null=True, blank=True)
     delivery_date = models.DateField(null=True, blank=True)
 

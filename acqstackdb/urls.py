@@ -20,6 +20,7 @@ from acquisitions import views
 
 urlpatterns = [
     url(r'^$', views.home, name='home'),
+    url(r'^dashboard$', views.dashboard, name='dashboard'),
     url(r'^acquisition/(?P<id>\d*)$', views.acquisition, name='acquisition'),
     url(r'^acquisition/(?P<id>\d*)/edit$',
         views.edit_acquisition,

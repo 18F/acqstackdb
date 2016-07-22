@@ -1,0 +1,98 @@
+{% extends "acquisitions/layout.html" %}
+
+{% block content %}
+<h1>Ongoing Acquisitions</h1>
+{% if request.user.is_authenticated %}
+<div class="user-info float-right">
+  Logged in as {{ user }}   <a class="usa-button" href="/logout">Log out</a>
+</div>
+<div class="">
+  <a class="usa-button" href="/new/acquisition">Add an acquisition</a>
+  <a href="/new/">Add other stuff</a>
+</div>
+<div class="">
+  <h2>Tracks</h2>
+  {% for track in data %}<a class="usa-button {% if forloop.counter == 1 %}usa-button-outline{% endif %} button-selector track-{{track}}">{{track}}</a>{% endfor %}
+</div>
+{% for track in data.items %}
+<div class="acq-track track-{{track.0}} {% if forloop.counter > 1 %}hidden{% endif %}">
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        {% for stage in track.1.items %}
+        {% if stage.1.steps|length > 0 %}
+          <th scope="col">
+            {{ stage.1.name }}
+          </th>
+        {% endif %}
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for actor in actors %}
+        <tr>
+          <td>
+            {{ actor.name }}
+          </td>
+          {% for stage in track.1.items %}
+          {% if stage.1.steps|length > 0 %}
+            <td scope="col" class="table-content">
+              {% for step in stage.1.steps.items %}
+              {% if step.1.name == actor.name %}
+              <a class="table-link" href="#{{ track.0 }}-{{ stage.1.name }}-{{ actor.name }}">{{ step.1.acquisitions|length }}{% if step.1.wip_limit == 0 or step.1.wip_limit > step.1.acquisitions|length %}<span class="float-right green"> ✔︎{% elif step.1.wip_limit == step.1.acquisitions|length %} <span class="float-right yellow"> ●{% else %}<span class="float-right red"> 𝘅{% endif %}</span></a>
+              {% endif %}
+              {% endfor %}
+            </td>
+          {% endif %}
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% for stage in track.1.items %}
+    {% for step in stage.1.steps.items  %}
+      <h2 id="{{ track.0 }}-{{ stage.1.name }}-{{ step.1.name }}">{{ stage.1.name }} -  {{ step.1.name }}</h2>
+      {% if step.1.acquisitions|length > 0 %}
+      {% for acq in step.1.acquisitions %}
+      <div class="acq-content usa-grid track-{{ acq.track }}">
+        {% include "acquisitions/includes/private-item.html" %}
+      </div>
+      {% endfor %}
+      {% else %}
+      <div class="acq-content-none usa-grid">
+        <h3>None</h3>
+      </div>
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+</div>
+{% endfor %}
+{% else %}
+<a class="usa-button" href="{% url 'social:begin' 'github-team' %}?next={{ request.path }}">Log in</a>
+{% endif %}
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+  'use strict';
+
+  $(document).ready(function() {
+    $('.hidden').hide();
+    $('td.table-content').filter(function() {
+      return $(this).text().trim().length === 0;
+    }).css('background-color','black');
+  });
+
+  $('.button-selector').click(function() {
+    $('.button-selector').removeClass('usa-button-outline');
+    $(this).addClass('usa-button-outline');
+    var track = $(this).attr('class')
+      .split(' ')
+      .filter(function(i) {return i.search(/track/) >= 0;})
+      .join();
+    $('.acq-track').hide();
+    $('.acq-track.'+track).show();
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,5 @@
+<h3>{{ acq.task }} ({{ acq.subagency }})</h3>
+{% if acq.rfq_id %}<div><small>RFQ ID# {{ acq.rfq_id }}</small></div>{% endif %}
+<div><span class="acq-field usa-width-one-third">Release Date</span><span class="acq-data usa-width-two-thirds">{{ acq.release_date | default:"—" }}</span></div>
+<div><span class="acq-field usa-width-one-third">Period of Performance</span><span class="acq-data usa-width-two-thirds">{{ acq.period_of_performance | default:"—" }}</span></div>
+<div><span class="acq-field usa-width-one-third">Description</span><span class="acq-data usa-width-two-thirds">{{ acq.description | default:"—" }}</span></div>

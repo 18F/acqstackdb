@@ -1,96 +1,36 @@
 {% extends "acquisitions/layout.html" %}
 
 {% block content %}
-<h1>Ongoing Acquisitions</h1>
-{% if request.user.is_authenticated %}
-<div class="user-info float-right">
-  Logged in as {{ user }}   <a class="usa-button" href="/logout">Log out</a>
-</div>
-<div class="">
-  <a class="usa-button" href="/new/acquisition">Add an acquisition</a>
-  <a href="/new/">Add other stuff</a>
-</div>
-<div class="">
-  <h2>Tracks</h2>
-  {% for track in data %}<a class="usa-button {% if forloop.counter == 1 %}usa-button-outline{% endif %} button-selector track-{{track}}">{{track}}</a>{% endfor %}
-</div>
-{% for track in data.items %}
-<div class="acq-track track-{{track.0}} {% if forloop.counter > 1 %}hidden{% endif %}">
-  <table>
-    <thead>
-      <tr>
-        <th></th>
-        {% for stage in track.1.items %}
-        {% if stage.1.steps|length > 0 %}
-          <th scope="col">
-            {{ stage.1.name }}
-          </th>
-        {% endif %}
-        {% endfor %}
-      </tr>
-    </thead>
-    <tbody>
-      {% for actor in actors %}
-        <tr>
-          <td>
-            {{ actor.name }}
-          </td>
-          {% for stage in track.1.items %}
-          {% if stage.1.steps|length > 0 %}
-            <td scope="col" class="table-content">
-              {% for step in stage.1.steps.items %}
-              {% if step.1.name == actor.name %}
-              <a class="table-link" href="#{{ track.0 }}-{{ stage.1.name }}-{{ actor.name }}">{{ step.1.acquisitions|length }}{% if step.1.wip_limit == 0 or step.1.wip_limit > step.1.acquisitions|length %}<span class="float-right green"> ✔︎{% elif step.1.wip_limit == step.1.acquisitions|length %} <span class="float-right yellow"> ●{% else %}<span class="float-right red"> 𝘅{% endif %}</span></a>
-              {% endif %}
-              {% endfor %}
-            </td>
-          {% endif %}
-          {% endfor %}
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  {% for stage in track.1.items %}
-    {% for step in stage.1.steps.items  %}
-      <h2 id="{{ track.0 }}-{{ stage.1.name }}-{{ step.1.name }}">{{ stage.1.name }} -  {{ step.1.name }}</h2>
-      {% if step.1.acquisitions|length > 0 %}
-      {% for acq in step.1.acquisitions %}
-        {% include "acquisitions/includes/item.html" %}
-      {% endfor %}
-      {% else %}
-      <div class="acq-content-none usa-grid">
-        <h3>None</h3>
+<div class="usa-grid">
+  <h1>18F Acquisitions</h1>
+  <div class="usa-width-two-thirds">
+    <h2>Current solicitations</h2>
+    {% for acq in acquisitions %}
+      <div class="acq-content">
+        {% include "acquisitions/includes/public-item.html" %}
       </div>
-      {% endif %}
     {% endfor %}
-  {% endfor %}
+  </div>
+  <div class="usa-width-one-third">
+    <h2>About</h2>
+    <p>In keeping with its mission to transform the way the federal government builds and buys digital services, 18F set out to find a new way of procuring digital services: <a href="https://18f.gsa.gov/2015/01/08/creating-a-federal-marketplace-for-agile-delivery-services/">at the speed of agile development cycles</a>. That means ideally less than four weeks from solicitation to contract kickoff, and from there no more than three months to deliver a minimum viable product.</p>
+    <p>18F partnered with the General Service Administration (GSA) <a href="https://www.gsa.gov/portal/content/105150">Office of Integrated Technology Services</a> to establish a <a href="http://www.gsa.gov/portal/content/199353">blanket purchase agreement (BPA)</a> featuring vendors specializing in agile delivery services (e.g., user-centered design, agile software development, DevOps). The <strong>Agile Delivery Services BPA (Agile BPA)</strong> represents an effort to align acquisition practices with agile delivery practices.</p>
+    <p>The Agile BPA is different from most other traditional IT services contract vehicles. It uses <a href="https://18f.gsa.gov/2015/04/23/coming-soon-the-agile-delivery-services-soliciatation/">novel ways to select vendors</a>: the most important thing for us is the ability to ship high-quality working software. We plan to issue task orders &mdash; consistent with the <a href="https://playbook.cio.gov/techfar/">TechFAR</a> &mdash; that feature shorter time-frames, smaller dollar amounts, and user-centered design principles.</p>
+    <p>We use an <strong>iterative and incremental</strong> approach to the use of agile procurement. This will allow us to focus on building the appropriate processes and tools, and help us scale over time.</p>
+    <h2>Learn more as a </h2>
+    <ul class="learn-more">
+      <li class="learn-more-federal-agency"><a href="buyers/">Federal agency interested in buying services</a></li>
+      <li class="learn-more-vendor"><a href="vendors/">Vendor</a></li>
+    </ul>
+    <h2>Read the Ordering Guide</h2>
+    <ul>
+      <li><a href="ordering-guide/">Read the Agile BPA Ordering Guide</a></li>
+    </ul>
+    <h2>Get updates</h2>
+    <ul>
+      <li><a href="https://18f.gsa.gov/tags/agile-bpa/">Read 18F blog posts about the Agile BPA</a></li>
+      <li><a href="https://eepurl.com/bJQHFr">Subscribe to the 18F acquisition news email list</a></li>
+    </ul>
+  </div>
 </div>
-{% endfor %}
-{% else %}
-<a class="usa-button" href="{% url 'social:begin' 'github-team' %}?next={{ request.path }}">Log in</a>
-{% endif %}
-{% endblock %}
-
-{% block script %}
-<script type="text/javascript">
-  'use strict';
-
-  $(document).ready(function() {
-    $('.hidden').hide();
-    $('td.table-content').filter(function() {
-      return $(this).text().trim().length === 0;
-    }).css('background-color','black');
-  });
-
-  $('.button-selector').click(function() {
-    $('.button-selector').removeClass('usa-button-outline');
-    $(this).addClass('usa-button-outline');
-    var track = $(this).attr('class')
-      .split(' ')
-      .filter(function(i) {return i.search(/track/) >= 0;})
-      .join();
-    $('.acq-track').hide();
-    $('.acq-track.'+track).show();
-  });
-</script>
 {% endblock %}

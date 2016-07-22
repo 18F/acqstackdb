@@ -9,6 +9,14 @@ from collections import OrderedDict
 
 # Create your views here.
 def home(request):
+    acquisitions = Acquisition.objects.filter(public=True)
+
+    return render(request, "acquisitions/index.html", {
+        "acquisitions": acquisitions
+    })
+
+
+def dashboard(request):
     acquisitions = Acquisition.objects.all()
     tracks = Track.objects.all()
     stages = Stage.objects.all()
@@ -52,7 +60,7 @@ def home(request):
         )
         data[acq_step.track.name][acq_step.step.stage.order]["steps"][acq_step.order]["acquisitions"].append(a)
 
-    return render(request, "acquisitions/index.html", {
+    return render(request, "acquisitions/dashboard.html", {
         "data": data,
         "actors": actors
     })
