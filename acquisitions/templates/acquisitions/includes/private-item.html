@@ -1,10 +1,6 @@
 <h3><a href="/acquisition/{{ acq.id }}">{{ acq.task }} ({{ acq.subagency }})</a></h3>
 {% include "acquisitions/includes/public-item.html" %}
 
-<div><span class="acq-field usa-width-one-third">Award Date</span><span class="acq-data usa-width-two-thirds">{{ acq.award_date | default:"—" }}</span></div>
-{% if acq.award_status > 17 %}
-<div><span class="acq-field usa-width-one-third">Vendor</span><span class="acq-data usa-width-two-thirds">{{ acq.vendor | default:"—" }}</span></div>
-{% endif %}
 <div><span class="acq-field usa-width-one-third">Delivery Date</span><span class="acq-data usa-width-two-thirds">{{ acq.delivery_date | default:"—" }}</span></div>
 <div><span class="acq-field usa-width-one-third">Value</span><span class="acq-data usa-width-two-thirds">{{ acq.dollars | default:"—"}}</span></div>
 <div><span class="acq-field usa-width-one-third">Contracting Office</span><span class="acq-data usa-width-two-thirds">{{ acq.contracting_office | default:"—" }}</span></div>
