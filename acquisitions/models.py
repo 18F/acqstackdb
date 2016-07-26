@@ -30,7 +30,7 @@ class Subagency(models.Model):
     agency = models.ForeignKey(Agency)
 
     def __str__(self):
-        return "%s - %s" % (self.name, self.agency)
+        return "%s - %s" % (self.agency, self.name)
 
     class Meta:
         ordering = ('name',)
