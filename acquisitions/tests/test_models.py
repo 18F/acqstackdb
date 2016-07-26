@@ -28,7 +28,7 @@ def test_create_acquisition():
     )
 
     assert str(acquisition) == "Build a test thing " + \
-                               "(Test Subagency - Test Agency)"
+                               "(Test Agency - Test Subagency)"
 
 
 @pytest.mark.django_db
@@ -58,7 +58,7 @@ def test_correct_track():
 
         acquisition.full_clean()
         assert str(acquisition) == "Build a test thing " + \
-                                   "(Test Subagency - Test Agency)"
+                                   "(Test Agency - Test Subagency)"
 
 
 @pytest.mark.django_db
