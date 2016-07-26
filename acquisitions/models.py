@@ -197,7 +197,6 @@ class Acquisition(models.Model):
 
     COMPETITION_STRATEGY_CHOICES = (
         ("Sole Source", "Sole Source"),
-        ("Full and Open", "Full and Open"),
         ("Set-Aside", "Set-Aside"),
         ("Partial Small Business Set-Aside",
             "Partial Small Business Set-Aside"),
@@ -223,13 +222,8 @@ class Acquisition(models.Model):
             "Competitive Delivery Order Fair Opportunity Provided"),
         ("Non-Competitive Delivery Order", "Non-Competitive Delivery Order"),
         ("Fair Opportunity", "Fair Opportunity"),
-        ("Sole-Source", "Sole-Source"),
         ("Limited Sources", "Limited Sources"),
         ("Competitive Schedule Buy", "Competitive Schedule Buy"),
-        ("Full and Open after exclusion of sources (competitive small business \
-            set-asides, competitive 8a)",
-            "Full and Open after exclusion of sources (competitive small \
-            business set-asides, competitive 8a)"),
         ("Full and Open Competition Unrestricted",
             "Full and Open Competition Unrestricted"),
         ("Not Available for Competition (e.g., 8a sole source, HUBZone & \
@@ -248,8 +242,6 @@ class Acquisition(models.Model):
             "Follow On to Competed Action (FAR 6.302-1)"),
         ("Limited Sources FSS Order", "Limited Sources FSS Order"),
         ("Competitive Schedule Buy", "Competitive Schedule Buy"),
-        ("Partial Small Business Set-Aside",
-            "Partial Small Business Set-Aside"),
     )
 
     PROCUREMENT_METHOD_CHOICES = (
@@ -284,22 +276,15 @@ class Acquisition(models.Model):
             "Indefinite Delivery Vehicle Base Contract"),
         ("Order under GSA Federal Supply Schedules Program",
             "Order under GSA Federal Supply Schedules Program"),
-        ("Order under IDV", "Order under IDV"),
         ("Purchase Order", "Purchase Order"),
         ("Contract modification", "Contract modification"),
         ("Ability One", "Ability One"),
         ("Call Order under GSA Schedules BPA",
             "Call Order under GSA Schedules BPA"),
         ("GSA Schedule Contract", "GSA Schedule Contract"),
-        ("Negotiated", "Negotiated"),
-        ("Sealed Bid", "Sealed Bid"),
-        ("Government-wide Agency Contract-GWAC",
-            "Government-wide Agency Contract-GWAC"),
         ("Commercial Item Contract", "Commercial Item Contract"),
         ("GSA Schedules Program BPA", "GSA Schedules Program BPA"),
         ("Basic Ordering Agreement", "Basic Ordering Agreement"),
-        ("Blanket Purchase Agreement-BPA", "Blanket Purchase Agreement-BPA"),
-        ("Multi-Agency Contract", "Multi-Agency Contract"),
     )
 
     subagency = models.ForeignKey(Subagency)
