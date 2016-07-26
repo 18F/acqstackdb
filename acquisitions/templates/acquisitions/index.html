@@ -38,9 +38,9 @@
               {% for step in stage.1.steps.items %}
               {% if step.0 == actor.name %}
               {% if track.0 == "Overall" %}
-              <a class="table-link" href="#{{ track.0 }}-{{ stage.1.name }}-{{ actor.name }}">{{ step.1.acquisitions|length }}</a>
+              <a class="table-link" href="#{{ track.0 }}-{{ stage.0 }}-{{ actor.name }}">{{ step.1.acquisitions|length }}</a>
               {% else %}
-              <a class="table-link" href="#{{ track.0 }}-{{ stage.1.name }}-{{ actor.name }}">{{ step.1.acquisitions|length }}{% if step.1.wip_limit == 0 or step.1.wip_limit > step.1.acquisitions|length %}<span class="float-right green"> ✔︎{% elif step.1.wip_limit == step.1.acquisitions|length %} <span class="float-right yellow"> ●{% else %}<span class="float-right red"> 𝘅{% endif %}</span></a>
+              <a class="table-link" href="#{{ track.0 }}-{{ stage.0 }}-{{ actor.name }}">{{ step.1.acquisitions|length }}{% if step.1.wip_limit == 0 or step.1.wip_limit > step.1.acquisitions|length %}<span class="float-right green"> ✔︎{% elif step.1.wip_limit == step.1.acquisitions|length %} <span class="float-right yellow"> ●{% else %}<span class="float-right red"> 𝘅{% endif %}</span></a>
               {% endif %}
               {% endif %}
               {% endfor %}
@@ -52,7 +52,7 @@
   </table>
   {% for stage in track.1.items %}
     {% for step in stage.1.steps.items  %}
-      <h2 id="{{ track.0 }}-{{ stage.1.name }}-{{ step.1.name }}">{{ stage.0 }} -  {{ step.0 }}</h2>
+      <h2 id="{{ track.0 }}-{{ stage.0 }}-{{ step.0 }}">{{ stage.0 }} -  {{ step.0 }}</h2>
       {% if step.1.acquisitions|length > 0 %}
       {% for acq in step.1.acquisitions %}
         {% include "acquisitions/includes/item.html" %}
