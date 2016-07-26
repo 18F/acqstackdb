@@ -117,7 +117,7 @@ class Step(models.Model):
         return "%s - %s" % (self.stage, self.actor,)
 
     class Meta:
-        pass
+        ordering = ('steptrackthroughmodel__order',)
 
 
 class StepTrackThroughModel(OrderedModel):
