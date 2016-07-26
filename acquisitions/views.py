@@ -14,43 +14,40 @@ def home(request):
     stages = Stage.objects.all()
     steps = Step.objects.all()
     data = OrderedDict()
-    data["Overall"] = {}
+    data["Overall"] = OrderedDict()
     actors = Actor.objects.all()
 
     for track in tracks:
-        data[track.name] = {}
-        for stage in stages:
-            data[track.name][stage.order] = {
-                "name": stage.name,
+        data[track.name] = OrderedDict()
+        for stage in stages.all().order_by('order'):
+            data[track.name][stage.name] = {
                 "wip_limit": stage.wip_limit,
-                "total": acquisitions.filter(step__stage=stage),
-                "steps": {}
+                "acquisitions": acquisitions.filter(
+                    step__stage=stage, track=track
+                ),
+                "steps": OrderedDict()
             }
-            data["Overall"][stage.order] = {
-                "name": stage.name,
-                "wip_limit": stage.wip_limit,
-                "total": acquisitions.filter(step__stage=stage),
-                "steps": {}
-            }
+            for step in steps.filter(
+                stage=stage, track=track
+            ).order_by('steptrackthroughmodel__order'):
+                s = step.steptrackthroughmodel_set.filter(track=track).first()
+                data[track.name][stage.name]["steps"][s.step.actor.name] = {
+                    "wip_limit": s.wip_limit,
+                    "acquisitions": acquisitions.filter(step=step, track=track)
+                }
 
-    for step in steps:
-        for s in step.steptrackthroughmodel_set.all():
-            data[s.track.name][s.step.stage.order]["steps"][s.order] = {
-                "name": s.step.actor.name,
-                "wip_limit": s.wip_limit,
-                "acquisitions": []
+    for stage in stages.all().order_by('order'):
+        data["Overall"][stage.name] = {
+            "acquisitions": acquisitions.filter(step__stage=stage),
+            "steps": OrderedDict()
+        }
+        for step in steps.filter(
+            stage=stage
+        ).order_by('steptrackthroughmodel__order'):
+            data["Overall"][stage.name]["steps"][step.actor.name] = {
+                "wip_limit": 0,
+                "acquisitions": acquisitions.filter(step=step)
             }
-            data["Overall"][s.step.stage.order]["steps"][s.order] = {
-                "name": s.step.actor.name,
-                "wip_limit": s.wip_limit,
-                "acquisitions": []
-            }
-
-    for a in acquisitions:
-        acq_step = a.step.steptrackthroughmodel_set.get(
-            track=a.track
-        )
-        data[acq_step.track.name][acq_step.step.stage.order]["steps"][acq_step.order]["acquisitions"].append(a)
 
     return render(request, "acquisitions/index.html", {
         "data": data,
