@@ -21,6 +21,7 @@ class Agency(models.Model):
 
     class Meta:
         verbose_name_plural = "Agencies"
+        ordering = ('name',)
 
 
 class Subagency(models.Model):
